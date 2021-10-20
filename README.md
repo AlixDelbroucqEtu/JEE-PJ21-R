@@ -10,6 +10,41 @@ L'objectif de ce projet et de développer la partie promotion du commerce en lig
 
 # Guide Installation
 
+* Placer ce repertoire dans le dossier webapps de votre apache.
+* Ajouter/Modifier le context du fichier conf/server.xml de votre serveur apache comme suis dans la balise host. 
+```
+ <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+        <!-- SingleSignOn valve, share authentication between web applications
+             Documentation at: /docs/config/valve.html -->
+        <!--
+        <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
+        -->
+
+        <!-- Access log processes all example.
+             Documentation at: /docs/config/valve.html
+             Note: The pattern used is equivalent to using pattern="common" -->
+          <Context  
+          docBase="votre_chemin_perso/webapps/JEE-PJ21-R/promos/target/jeepj21r-1.0-SNAPSHOT.war"
+          path="jeepj21r"
+          reloadable="true"
+          backgroundProcessorDelay="3"
+        />
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+      </Host>
+```
+
+En remplacent "votre_chemin_perso" avec le chemin absolu vers votre serveur apache.
+
+Dans le repertoire promo executez les commandes suivantes : 
+* mvn clean
+* mvn install
+* mvn war:exploded
+
 # Description
 
 # Objectifs
