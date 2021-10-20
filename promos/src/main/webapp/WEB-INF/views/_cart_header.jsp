@@ -1,13 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<a class="btn btn-primary" href="cart/1/validate.html">Commander</a>
-
 
 <h1>Panier</h1>
-
-
-
 
 <c:choose>
 	<c:when test="${empty cart.articles}">
@@ -28,3 +23,5 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
+
+<a class="btn btn-primary" href="cart/1/validate.html">Commander</a>
