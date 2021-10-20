@@ -76,12 +76,8 @@ public class CartController {
 	public SimpleResponse add(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
 		ArticleMockDao articleMockDao = new ArticleMockDao();
 		SimpleResponse res = new SimpleResponse();
-		System.out.println(
-				"********************\n"
-						+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), art.getId()) + "\n" 
-						+ "********************"
-				);
-		if (art.getQty() <0) {
+		
+		if (art.getQty() < 0) {
 			res.status = Status.ERROR;
 			res.message = "La quantité de l'article doit être positive";
 			return res;
@@ -108,7 +104,15 @@ public class CartController {
 					articles.add(article);
 				}
 				cart.setArticles(articles);
-				res.status= Status.OK;
+				
+				System.out.println(
+						"********************\n"
+								+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), art.getId()) + "\n" 
+								+ "********************"
+						);
+				
+				res.status = Status.OK;
+				
 				return res;
 
 			}

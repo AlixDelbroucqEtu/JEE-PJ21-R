@@ -1,6 +1,5 @@
 
 $(function() {
-	
 	var link  = document.createElement('link');
 	link.rel  = 'stylesheet';
 	link.type = 'text/css';
@@ -16,6 +15,12 @@ $(function() {
 			dataType: "json",
 			contentType: 'application/json',
 			data: JSON.stringify( {id: ref, qty: 1} )
+		}).done(function(data){
+			$.ajax({
+				url: "cart/1.html"
+			}).done(function(data){
+				JSON.stringify( $('#cartInHeader').html(data) )
+			});
 		});
 	});
 	

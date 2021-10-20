@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Cart {
 
+	//Modifier modele pour ajouter quantity (hashmap ?)
 	List<Article> articles = new ArrayList<>();
 	
 	public List<Article> getArticles() {
