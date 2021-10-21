@@ -1,13 +1,9 @@
 # Projet JEE-PJ21-R  
 
-### Delbroucq Alix  
-### Genart Valentin  
-### Gomez Mickael  
-### Pires Theo  
+#### Delbroucq Alix - Genart Valentin - Gomez Mickael - Pires Theo  
 
-### 19/10/2021  
-
-### Master Informatique - Université de Lille
+#### 19/10/2021  
+#### Master Informatique - Université de Lille
 
 ## Introduction
 L'objectif de ce projet et de développer la partie promotion du commerce en ligne "Web Drive".
