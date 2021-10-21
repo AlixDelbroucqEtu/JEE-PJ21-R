@@ -1,17 +1,21 @@
 package fr.eservices.drive.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Cart {
 
-	//Modifier modele pour ajouter quantity (hashmap ?)
-	List<Article> articles = new ArrayList<>();
+	List<CartElement> elements = new ArrayList<>();
+
+	public List<CartElement> getElements() {
+		return elements;
+	}
+
+	public void setElements(List<CartElement> elements) {
+		this.elements = elements;
+	}
 	
-	public List<Article> getArticles() {
-		return articles;
-	}
-	public void setArticles(List<Article> articles) {
-		this.articles = articles;
-	}
+	
+	
 }

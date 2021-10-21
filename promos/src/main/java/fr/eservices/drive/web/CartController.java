@@ -3,8 +3,10 @@ package fr.eservices.drive.web;
 import java.io.ByteArrayOutputStream;
 
 import java.io.PrintWriter;
+import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import fr.eservices.drive.dao.DataException;
 import fr.eservices.drive.mock.ArticleMockDao;
 import fr.eservices.drive.model.Article;
 import fr.eservices.drive.model.Cart;
+import fr.eservices.drive.model.CartElement;
 import fr.eservices.drive.model.Order;
 import fr.eservices.drive.repository.OrderRepository;
 import fr.eservices.drive.web.dto.CartEntry;
@@ -74,7 +77,6 @@ public class CartController {
 	@ResponseBody
 	@PostMapping(path="/{id}/add.json",consumes="application/json")
 	public SimpleResponse add(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
-		ArticleMockDao articleMockDao = new ArticleMockDao();
 		SimpleResponse res = new SimpleResponse();
 		
 		if (art.getQty() < 0) {
@@ -83,7 +85,7 @@ public class CartController {
 			return res;
 		}
 		try {
-			Article article= articleMockDao.find(art.getId());
+			Article article= daoArticle.find(art.getId());
 			if(article== null) {
 				res.status = Status.ERROR;
 				res.message = "Cet article n'existe pas";
@@ -96,20 +98,26 @@ public class CartController {
 					daoCart.store(id, cart);
 				}
 				
-				List<Article> articles = cart.getArticles();
-				if(articles == null) {
-					articles = new ArrayList<Article>();
+				List<CartElement> elements = cart.getElements();
+				
+				if(elements == null) elements = new ArrayList<CartElement>();
+				
+				boolean alreadyExist = false;
+				for (CartElement element : elements) {
+					if (element.getArticle().getId().equals(article.getId())) {
+						alreadyExist = true;
+						element.setQuantite(element.getQuantite()+art.getQty());
+					}
 				}
-				for (int i=0;i< art.getQty(); i++) {
-					articles.add(article);
-				}
-				cart.setArticles(articles);
+				if (!alreadyExist) elements.add(new CartElement(article, art.getQty()));
 				
 				System.out.println(
 						"********************\n"
-								+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), art.getId()) + "\n" 
+								+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), article) + "\n" 
 								+ "********************"
 						);
+				
+				
 				
 				res.status = Status.OK;
 				
@@ -121,6 +129,34 @@ public class CartController {
 		}
 		
 	}
+	
+	
+	@ResponseBody
+	@PostMapping(path="/{id}/update.json",consumes="application/json")
+	public SimpleResponse update(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
+
+		SimpleResponse res = new SimpleResponse();
+		
+		Article article= daoArticle.find(art.getId());
+		Cart cart = daoCart.getCartContent(id);
+		
+		for (CartElement element : cart.getElements()) {
+			if (element.getArticle().getId().equals(article.getId())) {
+				element.setQuantite(art.getQty());
+			}
+		}
+		
+		System.out.println(
+				"********************\n"
+						+ "***** " + String.format("Update Article [%s] quantity %d in cart", article, art.getQty()) + "\n" 
+						+ "********************"
+				);
+		
+		res.status = Status.OK;
+		
+		return res;
+	}
+	
 
 	@RequestMapping("/{id}/validate.html")
 	public String validateCart(@PathVariable(name="id") int id, Model model) throws DataException {
@@ -141,9 +177,9 @@ public class CartController {
 			order.setCustomerId("chuckNorris");
 			List<String>articles = new ArrayList<String>();
 			int price =0;
-			for(Article article : cart.getArticles()) {	
-				articles.add(article.getId());
-				price += article.getPrice();
+			for(CartElement ce : cart.getElements()) {	
+				articles.add(ce.getArticle().getId());
+				price += ce.getArticle().getPrice();
 			}
 			order.setArticles(articles);
 			// for each article, add it to the order

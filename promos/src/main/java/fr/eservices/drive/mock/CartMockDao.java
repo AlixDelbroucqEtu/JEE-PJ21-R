@@ -15,6 +15,7 @@ import fr.eservices.drive.dao.CartDao;
 import fr.eservices.drive.dao.DataException;
 import fr.eservices.drive.model.Article;
 import fr.eservices.drive.model.Cart;
+import fr.eservices.drive.model.CartElement;
 
 @Component
 @Qualifier("mock")
@@ -33,12 +34,10 @@ public class CartMockDao implements CartDao {
 	protected Cart cart_1() {
 		Cart c = new Cart();
 		
-		List<Article> arts = new ArrayList<>();
-		arts.add( articleDao.find("10101010") );
-		arts.add( articleDao.find("10101012") );
-		arts.add( articleDao.find("10101013") );
+		c.getElements().add(new CartElement(articleDao.find("10101010"),1));
+		c.getElements().add(new CartElement(articleDao.find("10101012"),1));
+		c.getElements().add(new CartElement(articleDao.find("10101013"),1));
 		
-		c.setArticles(arts);
 		return c;
 	}
 	
