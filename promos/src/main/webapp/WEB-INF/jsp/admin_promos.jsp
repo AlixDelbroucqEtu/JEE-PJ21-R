@@ -11,7 +11,7 @@
         <form:form action="promo" method="post" modelAttribute="Promo">
             <div class="form-group">
                 <label>Type de promo</label>
-                <form:select path="type" class="form-control">
+                <form:select path="promoType" class="form-control">
                     <c:forEach items="${promoTypes}" var="promoType">
                         <form:option value="${promoType.id}">${promoType.type}</form:option>
                     </c:forEach>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="panel-body">
                     <ul>
-                        <li>Type : ${promo.type}</li>
+                        <li>Type : ${promo.promoType.type}</li>
                         <li>X : ${promo.x}</li>
                         <li>Y : ${promo.y}</li>
                         <li>Debut : ${promo.start}</li>

@@ -5,7 +5,10 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,10 +20,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Promo {
     
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int type;
+    @ManyToOne
+    @JoinColumn(name = "type")
+    private PromoType promoType;
 
     private float x;
 
@@ -47,12 +52,12 @@ public class Promo {
         this.id = id;
     }
 
-    public int getType() {
-        return type;
+    public PromoType getPromoType() {
+        return promoType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setPromoType(PromoType promoType) {
+        this.promoType = promoType;
     }
 
     public float getX() {
