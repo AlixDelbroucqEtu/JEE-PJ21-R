@@ -1,7 +1,30 @@
+<%@ page import="fr.eservices.promos.model.PromoType" %>
+<%@ page import="java.util.List" %>
+<%@ page import="fr.eservices.promos.model.Article" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@include file="_header.jsp" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+
+        <c:if test="${not empty param.erreur}">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                <c:if test="${param.erreur == 'date'}">
+                    Les dates spécifiées sont incorrectes.
+                </c:if>
+                <c:if test="${param.erreur == 'article'}">
+                    Aucun article sélectionné.
+                </c:if>
+                </div>
+            </div>
+        </c:if>
+
 
 <div class="panel panel-success">
     <div class="panel-heading">
@@ -12,18 +35,44 @@
             <div class="form-group">
                 <label>Type de promo</label>
                 <form:select path="promoType" class="form-control">
+                <%
+                    String lastType = "";
+                %>
                     <c:forEach items="${promoTypes}" var="promoType">
-                        <form:option value="${promoType.id}">${promoType.type}</form:option>
+                        <c:set var="promoTypeType" value="${promoType.type}"/>
+                        <%
+                        String type = (String)pageContext.getAttribute("promoTypeType");
+                        if(type != lastType){
+                            if(lastType != "") {
+                                 %>
+                                </optgroup>
+                                <%
+                            }
+                            %>
+                            <optgroup label="<c:out value = "${promoType.type}"/>">
+                            <%
+                        }
+                        lastType = type;
+                        %>
+                        <form:option value="${promoType.id}">${promoType.name}</form:option>
                     </c:forEach>
+                    </optgroup>
                 </form:select>
             </div>
             <div class="form-group">
+                <label>Article(s) concerné(s)</label>
+                <input id="inputArticles" class="form-control" type="text" maxlength="30" placeholder="Chercher un article..."/>
+            </div>
+            <div id="selectedArticles">
+
+            </div>
+            <div class="form-group">
                 <label>Valeur X</label>
-                <form:input class="form-control" path="x"></form:input>
+                <form:input class="form-control" maxlength="8" path="x"></form:input>
             </div>
             <div class="form-group">
                 <label>Valeur Y</label>
-                <form:input class="form-control" path="y"></form:input>
+                <form:input class="form-control" maxlength="8" path="y"></form:input>
             </div>
             <div class="form-group">
                 <label>Date de debut (yyyy-MM-dd)</label>
@@ -35,11 +84,11 @@
             </div>
             <div class="form-group">
                 <label>Nombre de clients max</label>
-                <form:input class="form-control" path="customerLimit"></form:input>
+                <form:input class="form-control" type="number" min="0" max="1000000" path="customerLimit"></form:input>
             </div>
             <div class="form-group">
                 <label>Code</label>
-                <form:input class="form-control" path="code"></form:input>
+                <form:input class="form-control" maxlength="20" path="code"></form:input>
             </div>
             <input type="submit" value="Ajouter la promo" class="btn btn-default">
         </form:form>
@@ -73,5 +122,40 @@
         </c:forEach>
     </div>
 </div>
+
+<script>
+
+        $("#inputArticles").keyup(function () {
+            $("#selectedArticles").empty();
+            $.ajax({
+                url: 'match',
+                method: 'POST',
+                async: false,
+                data: $("#inputArticles").val(),
+                success: function (data) {
+                    for(i=0; i<data.length; i++){
+                        $("#selectedArticles").append("<div onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'><div class='articleInputLib'>"+data[i].libelle+"</div><div class='articleInputMarque'>"+data[i].marque+"</div><div class='articleInputPrix'>"+data[i].price+"€</div></div>");
+                    }
+                }
+            });
+        });
+
+        function selectArticle(id) {
+            $.ajax({
+                url: 'selectArticle',
+                method: 'POST',
+                async: false,
+                data: id.toString(),
+                success: function (data) {
+                    if(data==0){
+                        $("#articleInput"+id).css('background-color','#F8F8F8');
+                    }else{
+                        $("#articleInput"+id).css('background-color','#DFF0D8');
+                    }
+                }
+            });
+        };
+
+</script>
 
 <%@include file="_footer.jsp" %>

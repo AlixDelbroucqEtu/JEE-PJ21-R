@@ -1,6 +1,0 @@
-2021-10-22 23:21:32 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROMO_TYPES" not found; SQL statement:
-select promotype0_.id as id1_2_, promotype0_.type as type2_2_ from promo_types promotype0_ [42102-200]
-2021-10-22 23:44:20 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROMO_TYPES" not found; SQL statement:
-select promotype0_.id as id1_2_, promotype0_.type as type2_2_ from promo_types promotype0_ [42102-200]
