@@ -45,6 +45,10 @@ ul.articles li {
 	margin: .2em 0;
 }
 
+.articleInput:hover {
+	cursor: pointer;
+}
+
 .articleInputMarque {
 	font-size: .8em;
 }

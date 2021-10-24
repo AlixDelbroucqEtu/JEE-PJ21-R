@@ -47,6 +47,24 @@ public class AdminController {
     public String addPromo(@ModelAttribute Promo promo, Model model) {
         if(!selectedArticles.isEmpty()) {
             if (promo.getStart() != null && promo.getEnd() != null && promo.getEnd().compareTo(promo.getStart()) >= 0) {
+                switch(promo.getPromoType().getType()){
+                    case "PROMOTION":
+                        promo.setY(0);
+                        promo.setCode(null);
+                        promo.setCustomerLimit(0);
+                        break;
+                    case "OFFRE MARKETING":
+                        switch(promo.getPromoType().getName()){
+                            case "Le 2ème à X%":
+                            case "X+1 gratuit":
+                                promo.setY(0);
+                            case "Le lot de X à Y€":
+                                if(promo.getX()%1 != 0)
+                                    return "redirect:promos?erreur=xint";
+                                break;
+                        }
+                        break;
+                }
                 promoService.saveOrUpdate(promo);
                 for (Article article : articleService.findAll()) {
                     if (selectedArticles.contains(article.getId())) {
@@ -86,5 +104,93 @@ public class AdminController {
         }
         selectedArticles.add(idArticleAsInt);
         return 1;
+    }
+
+    @ResponseBody
+    @PostMapping(path="/adaptForm")
+    public String adaptForm(@RequestBody String promoType) {
+        switch(promoType.charAt(0)){
+            case '1':
+                return "<div class='form-group'>\n" +
+                        "                <label>Pourcentage</label>\n" +
+                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "            </div>";
+            case '2':
+                return "<div class='form-group'>\n" +
+                        "                <label>Valeur</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
+                        "            </div>";
+            case '3':
+                return "<div class='form-group'>\n" +
+                        "                <label>Pourcentage</label>\n" +
+                        "                <form type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Nombre de clients max</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Code</label>\n" +
+                        "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
+                        "            </div>";
+            case '4':
+                return "<div class='form-group'>\n" +
+                        "                <label>Valeur</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Nombre de clients max</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Code</label>\n" +
+                        "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
+                        "            </div>";
+            case '5':
+                return "<div class='form-group'>\n" +
+                        "                <label>Valeur X</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Nombre de clients max</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Code</label>\n" +
+                        "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
+                        "            </div>";
+            case '6':
+                return "<div class='form-group'>\n" +
+                        "                <label>Pourcentage</label>\n" +
+                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Nombre de clients max</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Code</label>\n" +
+                        "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
+                        "            </div>";
+            case '7':
+                return "<div class='form-group'>\n" +
+                        "                <label>Valeur X</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Valeur Y</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='y' name='y'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Nombre de clients max</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label>Code</label>\n" +
+                        "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
+                        "            </div>";
+            default:
+                return "";
+        }
     }
 }

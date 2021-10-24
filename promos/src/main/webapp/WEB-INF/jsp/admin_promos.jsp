@@ -21,6 +21,9 @@
                 <c:if test="${param.erreur == 'article'}">
                     Aucun article sélectionné.
                 </c:if>
+                <c:if test="${param.erreur == 'xint'}">
+                    La valeur de X doit être entière pour le type de promotion sélectionné.
+                </c:if>
                 </div>
             </div>
         </c:if>
@@ -67,14 +70,6 @@
 
             </div>
             <div class="form-group">
-                <label>Valeur X</label>
-                <form:input class="form-control" maxlength="8" path="x"></form:input>
-            </div>
-            <div class="form-group">
-                <label>Valeur Y</label>
-                <form:input class="form-control" maxlength="8" path="y"></form:input>
-            </div>
-            <div class="form-group">
                 <label>Date de debut (yyyy-MM-dd)</label>
                 <form:input type="date" class="form-control" path="start"></form:input>
             </div>
@@ -82,13 +77,12 @@
                 <label>Date de fin (yyyy-MM-dd)</label>
                 <form:input type="date" class="form-control" path="end"></form:input>
             </div>
-            <div class="form-group">
-                <label>Nombre de clients max</label>
-                <form:input class="form-control" type="number" min="0" max="1000000" path="customerLimit"></form:input>
-            </div>
-            <div class="form-group">
-                <label>Code</label>
-                <form:input class="form-control" maxlength="20" path="code"></form:input>
+            <div id="adaptativeFields">
+                <div class="form-group">
+                    <label>Pourcentage</label>
+                    <form:input type='number' min='0' max='100' step='.01' class="form-control" path="x"></form:input>
+                </div>
+
             </div>
             <input type="submit" value="Ajouter la promo" class="btn btn-default">
         </form:form>
@@ -136,6 +130,19 @@
                     for(i=0; i<data.length; i++){
                         $("#selectedArticles").append("<div onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'><div class='articleInputLib'>"+data[i].libelle+"</div><div class='articleInputMarque'>"+data[i].marque+"</div><div class='articleInputPrix'>"+data[i].price+"€</div></div>");
                     }
+                }
+            });
+        });
+
+        $("#promoType").change(function () {
+            $("#adaptativeFields").empty();
+            $.ajax({
+                url: 'adaptForm',
+                method: 'POST',
+                async: false,
+                data: $("#promoType").val(),
+                success: function (data) {
+                    $("#adaptativeFields").append(data);
                 }
             });
         });
