@@ -56,6 +56,7 @@ public class CartController {
 		Cart cart = daoCart.getCartContent(id);
 		// assign to model var "cart"
 		model.addAttribute("cart", cart);
+
 		// return view name to display content of /WEB-INF/views/_cart_header.jsp
 		return "_cart_header";
 	}

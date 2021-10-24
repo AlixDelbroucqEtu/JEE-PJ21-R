@@ -4,4 +4,9 @@ import org.springframework.data.repository.CrudRepository;
 
 import fr.eservices.promos.model.Promo;
 
-public interface PromoRepository extends CrudRepository<Promo, Integer> {}
+import java.util.List;
+
+public interface PromoRepository extends CrudRepository<Promo, Integer> {
+
+    Object findByType(String type);
+}

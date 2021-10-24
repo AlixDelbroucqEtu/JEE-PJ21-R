@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories("fr.eservices.promos.repository")
-@ComponentScan("fr.eservices.promos")
 public class PromosApplication extends SpringBootServletInitializer{
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
