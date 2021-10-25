@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import fr.eservices.promos.model.Promo;
 import fr.eservices.promos.repository.PromoRepository;
 
+
 @Service
 public class PromoService {
     
@@ -28,6 +29,14 @@ public class PromoService {
 
     public void delete(int id) {
         promoRepository.deleteById(id);
+    }
+
+    /**
+     * Récupère tous les champs pormo du type offre marketing
+     * @return l'ensemble des offres marketing créées
+     */
+    public List<Promo> findMarketingCampain(){
+        return (List<Promo>)promoRepository.findAllMarketingCampains();
     }
 }
 

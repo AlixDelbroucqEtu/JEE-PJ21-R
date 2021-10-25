@@ -5,10 +5,6 @@
 
 
 <h1>Panier</h1>
-
-
-
-
 <c:choose>
 	<c:when test="${empty cart.articles}">
 		<p>Aucun article</p>

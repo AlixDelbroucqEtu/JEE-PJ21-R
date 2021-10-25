@@ -42,6 +42,13 @@ public class AdminController {
         model.addAttribute("articles", articleService.findAll());
         return "admin_promos";
     }
+    @GetMapping(path = "/marketingCampaign")
+    public String manageMaketingCampain(Model model) {
+        model.addAttribute("Promo", new Promo());
+        model.addAttribute("promos", promoService.findAll());
+        model.addAttribute("marketing_campain", promoService.findMarketingCampain());
+        return "admin_marketing_campaign";
+    }
 
     @PostMapping(path = "/promo")
     public String addPromo(@ModelAttribute Promo promo, Model model) {

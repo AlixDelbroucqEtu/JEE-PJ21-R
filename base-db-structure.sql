@@ -2,6 +2,9 @@ DROP TABLE IF EXISTS ARTICLE;
 DROP TABLE IF EXISTS PROMOS;
 DROP TABLE IF EXISTS CATEGORY;
 DROP TABLE IF EXISTS PROMO_TYPES;
+DROP TABLE IF EXISTS used_promo;
+DROP TABLE IF EXISTS customer;
+
 
 CREATE TABLE IF NOT EXISTS `promo_types` (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -55,3 +58,19 @@ INSERT INTO `article` (reference, libelle, marque, perished_date, cat_id, price)
     ('HVDA1', 'Haricots Verts', 'Daussy', TO_DATE('01/08/2023', 'DD/MM/YYYY'), 1, 2.09),
     ('MYHZ3', 'Mayonnaise', 'Heinz', TO_DATE('30/11/2021', 'DD/MM/YYYY'), 3, 1.40),
     ('DEAX2', 'Déodorant', 'Axe', NULL, 2, 2.49);
+
+CREATE TABLE `customer`
+(
+    `id`     INT NOT NULL AUTO_INCREMENT,
+    `pseudo` VARCHAR(25)
+);
+
+INSERT INTO `customer` (pseudo) VALUES ('Gaston');
+
+CREATE TABLE `used_promo`
+(
+    `customer_id` INT NOT NULL,
+    `promo_id`    INT NOT NULL,
+    FOREIGN KEY (`customer_id`) REFERENCES customer (`id`),
+    FOREIGN KEY  (`promo_id`)  REFERENCES Promos (`id`)
+);
