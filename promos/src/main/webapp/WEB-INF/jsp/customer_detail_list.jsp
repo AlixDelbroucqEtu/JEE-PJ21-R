@@ -7,6 +7,9 @@
     <div class="panel-heading">
         <h3 class="panel-title">Customer page</h3>
     </div>
+    <div class="panel-body">
+        <h2 class="panel-title">${customer.pseudo}</h2>
+    </div>
 </div>
 
 <div class="panel panel-info">
@@ -14,7 +17,7 @@
         <h3 class="panel-title">Customer page</h3>
     </div>
     <div class="panel-body">
-        <c:forEach items="${promos}" var="promo">
+        <c:forEach items="${used_promo}" var="promo">
 
             <div class="panel panel-warning">
                 <div class="panel-heading">

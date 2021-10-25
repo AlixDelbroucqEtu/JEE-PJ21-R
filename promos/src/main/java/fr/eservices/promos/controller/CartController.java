@@ -4,20 +4,20 @@ import java.io.ByteArrayOutputStream;
 
 
 import java.io.PrintWriter;
+import java.util.List;
 
 
+import fr.eservices.promos.dao.CartDao;
+import fr.eservices.promos.dto.SimpleResponse;
+import fr.eservices.promos.model.Article;
+import fr.eservices.promos.repository.OrderRepository;
+import fr.eservices.promos.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
-import fr.eservices.promos.dao.CartDao;
 import fr.eservices.promos.exception.DataException;
 import fr.eservices.promos.model.Cart;
 
@@ -25,12 +25,15 @@ import fr.eservices.promos.model.Cart;
 @RequestMapping(path="/cart")
 public class CartController {
 
-	@Autowired
+
 	CartDao daoCart;
 
-//	@Autowired
-//	OrderRepository orderRepository;
-//
+	@Autowired
+	ArticleService articleService;
+
+	@Autowired
+	OrderRepository orderRepository;
+
 //	@Autowired
 //	ArticleDao daoArticle;
 
@@ -64,11 +67,10 @@ public class CartController {
 //	@ResponseBody
 //	@PostMapping(path="/{id}/add.json",consumes="application/json")
 //	public SimpleResponse add(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
-//		ArticleMockDao articleMockDao = new ArticleMockDao();
 //		SimpleResponse res = new SimpleResponse();
 //		System.out.println(
 //				"********************\n"
-//						+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), art.getId()) + "\n" 
+//						+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), art.getId()) + "\n"
 //						+ "********************"
 //				);
 //		if (art.getQty() <0) {
@@ -83,13 +85,13 @@ public class CartController {
 //				res.message = "Cet article n'existe pas";
 //				return res;
 //			}
-//			else {			
+//			else {
 //				Cart cart = daoCart.getCartContent(id);
 //				if (cart == null) {
 //					cart = new Cart();
 //					daoCart.store(id, cart);
 //				}
-//				
+//
 //				List<Article> articles = cart.getArticles();
 //				if(articles == null) {
 //					articles = new ArrayList<Article>();
@@ -105,7 +107,7 @@ public class CartController {
 //		} catch (DataException e) {
 //			throw new DataException("Cet article n'existe pas \n"+e.getMessage());
 //		}
-//		
+//
 //	}
 //
 //	@RequestMapping("/{id}/validate.html")
@@ -119,7 +121,7 @@ public class CartController {
 //			}
 //			// create an order
 //			Order order = new Order();
-//			
+//
 //
 //			// set order date
 //			order.setCreatedOn(new Date());
@@ -127,7 +129,7 @@ public class CartController {
 //			order.setCustomerId("chuckNorris");
 //			List<String>articles = new ArrayList<String>();
 //			int price =0;
-//			for(Article article : cart.getArticles()) {	
+//			for(Article article : cart.getArticles()) {
 //				articles.add(article.getId());
 //				price += article.getPrice();
 //			}

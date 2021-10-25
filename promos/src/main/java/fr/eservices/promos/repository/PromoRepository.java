@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PromoRepository extends CrudRepository<Promo, Integer> {
 
-    Object findByType(String type);
+    Promo findByType(String type);
 }

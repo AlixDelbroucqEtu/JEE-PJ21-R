@@ -8,6 +8,8 @@ import fr.eservices.promos.model.Customer;
 import fr.eservices.promos.model.UsedPromo;
 import fr.eservices.promos.repository.CustomerRepository;
 import fr.eservices.promos.repository.UsedPromoRepository;
+import fr.eservices.promos.service.CustomerService;
+import fr.eservices.promos.service.Used_PromoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,17 +25,17 @@ import fr.eservices.promos.repository.OrderRepository;
 public class CustomerDetailController {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    private CustomerService customerService;
 
     @Autowired
-    private UsedPromoRepository usedPromoRepository;
+    private Used_PromoService used_promoService;
 
     @RequestMapping(path = "/{custId}.html")
     public String list(@PathVariable Integer custId, Model model) {
 
         // use repo to get orders of a customer 
-        Customer customer = customerRepository.findById(custId).get();
-        List<UsedPromo> promo_used = null;
+        Customer customer = customerService.findById(custId);
+        List<UsedPromo> promo_used = used_promoService.findAllByCustomer_Id(custId);
         // assign in model as "orders"
         model.addAttribute("customer", customer);
         model.addAttribute("used_promo", promo_used);

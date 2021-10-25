@@ -16,20 +16,20 @@ import fr.eservices.promos.repository.OrderRepository;
 @Controller
 @RequestMapping(path="/order")
 public class OrderController {
-	
-	@Autowired
-	private OrderRepository repoOrder;
-	
-	@RequestMapping(path="/ofCustomer/{custId}.html")
-	public String list(@PathVariable String custId, Model model) {
-		
-		// use repo to get orders of a customer
-		List<Order> orders = repoOrder.findByCustomerIdOrderByCreatedOnDesc(custId);
-		// assign in model as "orders"
-		model.addAttribute("orders", orders);
-		// return order list view
-		
-		return "order_list";
-	}
+
+    @Autowired
+    private OrderRepository repoOrder;
+
+    @RequestMapping(path="/ofCustomer/{custId}.html")
+    public String list(@PathVariable String custId, Model model) {
+
+        // use repo to get orders of a customer
+        List<Order> orders = repoOrder.findByCustomerIdOrderByCreatedOnDesc(custId);
+        // assign in model as "orders"
+        model.addAttribute("orders", orders);
+        // return order list view
+
+        return "order_list";
+    }
 
 }

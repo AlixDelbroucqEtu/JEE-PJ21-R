@@ -1,54 +1,100 @@
 package fr.eservices.promos.model;
 
-public class Article {
-	
-	private String
-		id,
-		name,
-		img,
-		cat_id;
-	
-	private int price;
+import org.springframework.format.annotation.DateTimeFormat;
 
-	public String getId() {
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+public class Article {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	private String reference;
+
+	private String libelle;
+
+	private String marque;
+
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "perished_date")
+	private Date perishedDate;
+
+	@ManyToOne
+	@JoinColumn(name = "cat_id")
+	private Category category;
+
+	@Column(precision=7, scale=2)
+	private double price;
+
+	@ManyToOne
+	@JoinColumn(name = "promo")
+	private Promo promo;
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public int getPrice() {
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getLibelle() {
+		return libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		this.libelle = libelle;
+	}
+
+	public String getMarque() {
+		return marque;
+	}
+
+	public void setMarque(String marque) {
+		this.marque = marque;
+	}
+
+	public Date getPerishedDate() {
+		return perishedDate;
+	}
+
+	public void setPerishedDate(Date perishedDate) {
+		this.perishedDate = perishedDate;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	public String getName() {
-		return name;
+	public Promo getPromo() {
+		return promo;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPromo(Promo promo) {
+		this.promo = promo;
 	}
-
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-	
-	public String getCat_id() {
-		return cat_id;
-	}
-	
-	public void setCat_id(String cat_id) {
-		this.cat_id = cat_id;
-	}
-
-	
 }

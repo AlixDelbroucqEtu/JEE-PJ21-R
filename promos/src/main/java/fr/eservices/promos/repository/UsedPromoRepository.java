@@ -2,7 +2,11 @@ package fr.eservices.promos.repository;
 
 
 import fr.eservices.promos.model.UsedPromo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface UsedPromoRepository extends JpaRepository<UsedPromo, Integer> {
+import java.util.List;
+
+public interface UsedPromoRepository extends CrudRepository<UsedPromo, Integer> {
+
+    public List<UsedPromo> findAllByCustomer_Id(Integer id);
 }

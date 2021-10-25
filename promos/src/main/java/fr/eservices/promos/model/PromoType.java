@@ -19,6 +19,8 @@ public class PromoType {
 
     private String type;
 
+    private String name;
+
     @OneToMany(mappedBy = "promoType")
     private List<Promo> promos;
 
@@ -36,5 +38,21 @@ public class PromoType {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Promo> getPromos() {
+        return promos;
+    }
+
+    public void setPromos(List<Promo> promos) {
+        this.promos = promos;
     }
 }

@@ -1,19 +1,20 @@
 package fr.eservices.promos.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 public class UsedPromoPk implements Serializable {
+    private long customer;
+    private long promo;
 
-    private String customerId;
-
-    private String promoId;
-
-    public UsedPromoPk(){
+    public UsedPromoPk() {
     }
 
-    public UsedPromoPk(String customerId, String promoId) {
-        this.customerId = customerId;
-        this.promoId = promoId;
+    public UsedPromoPk(long customer, long promo) {
+        this.customer = customer;
+        this.promo = promo;
     }
-
 }

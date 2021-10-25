@@ -9,5 +9,5 @@ import fr.eservices.promos.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>
 {
-	List<Order> findByCustomerIdOrderByCreatedOnDesc(String customerId);
+    List<Order> findByCustomerIdOrderByCreatedOnDesc(String customerId);
 }

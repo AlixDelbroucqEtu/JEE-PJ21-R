@@ -8,10 +8,13 @@ import java.io.Serializable;
 @Table(name="used_promos")
 @IdClass(UsedPromoPk.class)
 public class UsedPromo implements Serializable {
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Id
-    private String customerId;
+    @JoinColumn(name = "id")
+    private Customer customer;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @Id
-    private String promoId;
-
+    @JoinColumn(name = "id")
+    private Promo promo;
 }

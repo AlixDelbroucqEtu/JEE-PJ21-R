@@ -37,3 +37,22 @@ ul.articles li {
 	border-radius:  0 10px 0 10px;
 	color: #A00;
 }
+
+.articleInput {
+	border-radius: 6px;
+	padding: .5em;
+	background-color: #F8F8F8;
+	margin: .2em 0;
+}
+
+.articleInput:hover {
+	cursor: pointer;
+}
+
+.articleInputMarque {
+	font-size: .8em;
+}
+
+.articleInputPrix {
+	font-size: .7em;
+}

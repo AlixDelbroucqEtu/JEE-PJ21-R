@@ -1,17 +1,9 @@
 package fr.eservices.promos.model;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,6 +18,9 @@ public class Promo {
     @ManyToOne
     @JoinColumn(name = "type")
     private PromoType promoType;
+
+    @OneToMany(mappedBy = "promo")
+    private List<Article> articles;
 
     private float x;
 
@@ -108,5 +103,11 @@ public class Promo {
         this.code = code;
     }
 
-    
+    public List<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
+    }
 }
