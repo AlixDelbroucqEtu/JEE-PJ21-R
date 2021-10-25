@@ -7,8 +7,15 @@
     <div class="panel-heading">
         <h3 class="panel-title">Customer page</h3>
     </div>
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Customer page</h3>
+    </div>
     <div class="panel-body">
         <c:forEach items="${promos}" var="promo">
+
             <div class="panel panel-warning">
                 <div class="panel-heading">
                     <h3 class="panel-title">used Promo  #${promo.id}</h3>
