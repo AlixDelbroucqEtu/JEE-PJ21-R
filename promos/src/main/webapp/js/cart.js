@@ -9,19 +9,25 @@ $(function() {
 	
 	$(".addToCart").click( function(e) {
 		var ref = $(this).data("ref");
-		$.ajax({
-			method: 'POST',
-			url: "cart/1/add.json",
-			dataType: "json",
-			contentType: 'application/json',
-			data: JSON.stringify( {id: ref, qty: 1} )
-		}).done(function(data){
+		var quantity = document.getElementById("quantity".concat(ref)).value;
+		if (quantity<1) {
+			document.getElementById("quantity".concat(ref)).value;
+		} else {
 			$.ajax({
-				url: "cart/1.html"
+				method: 'POST',
+				url: "cart/1/add.json",
+				dataType: "json",
+				contentType: 'application/json',
+				data: JSON.stringify( {id: ref, qty: quantity} )
 			}).done(function(data){
-				JSON.stringify( $('#cartInHeader').html(data) )
+				$.ajax({
+					url: "cart/1.html"
+				}).done(function(data){
+					JSON.stringify( $('#cartInHeader').html(data) )
+				});
+				location.reload(true);
 			});
-		});
+		}
 	});
 	
 	$.ajax({

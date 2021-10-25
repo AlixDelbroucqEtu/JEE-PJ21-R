@@ -1,0 +1,4 @@
+2021-10-26 00:59:58 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "CART" non trouvée
+Table "CART" not found; SQL statement:
+select cart0_.id as id1_1_, cart0_.customerId as customer2_1_ from Cart cart0_ where cart0_.customerId=? [42102-200]

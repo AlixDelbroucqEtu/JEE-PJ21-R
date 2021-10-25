@@ -2,13 +2,13 @@ package fr.eservices.promos.dto;
 
 public class CartEntry {
 
-    String id;
+    int id;
     int qty;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
     public int getQty() {

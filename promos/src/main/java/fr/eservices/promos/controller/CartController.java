@@ -4,14 +4,17 @@ import java.io.ByteArrayOutputStream;
 
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 
-import fr.eservices.promos.dao.CartDao;
+import fr.eservices.promos.dto.CartEntry;
 import fr.eservices.promos.dto.SimpleResponse;
 import fr.eservices.promos.model.Article;
+import fr.eservices.promos.model.CartElement;
 import fr.eservices.promos.repository.OrderRepository;
 import fr.eservices.promos.service.ArticleService;
+import fr.eservices.promos.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,8 +28,8 @@ import fr.eservices.promos.model.Cart;
 @RequestMapping(path="/cart")
 public class CartController {
 
-
-	CartDao daoCart;
+	@Autowired
+	CartService cartService;
 
 	@Autowired
 	ArticleService articleService;
@@ -34,8 +37,6 @@ public class CartController {
 	@Autowired
 	OrderRepository orderRepository;
 
-//	@Autowired
-//	ArticleDao daoArticle;
 
 	@ExceptionHandler(DataException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -56,60 +57,143 @@ public class CartController {
 			throw new DataException("id inferieur à 0");
 		}
 		// get cart from dao
-		Cart cart = daoCart.getCartContent(id);
+		Cart cart = cartService.findByCustomerId(id);
+		if (cart==null) {
+			cart = new Cart(id);
+			cartService.save(cart);
+		}
 		// assign to model var "cart"
 		model.addAttribute("cart", cart);
 
 		// return view name to display content of /WEB-INF/views/_cart_header.jsp
 		return "_cart_header";
 	}
+	@ResponseBody
+	@PostMapping(path="/{id}/add.json",consumes="application/json")
+	public SimpleResponse add(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
+		SimpleResponse res = new SimpleResponse();
 
-//	@ResponseBody
-//	@PostMapping(path="/{id}/add.json",consumes="application/json")
-//	public SimpleResponse add(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
-//		SimpleResponse res = new SimpleResponse();
-//		System.out.println(
-//				"********************\n"
-//						+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), art.getId()) + "\n"
-//						+ "********************"
-//				);
-//		if (art.getQty() <0) {
-//			res.status = Status.ERROR;
-//			res.message = "La quantité de l'article doit être positive";
-//			return res;
-//		}
-//		try {
-//			Article article= articleMockDao.find(art.getId());
-//			if(article== null) {
-//				res.status = Status.ERROR;
-//				res.message = "Cet article n'existe pas";
-//				return res;
-//			}
-//			else {
-//				Cart cart = daoCart.getCartContent(id);
-//				if (cart == null) {
-//					cart = new Cart();
-//					daoCart.store(id, cart);
-//				}
-//
-//				List<Article> articles = cart.getArticles();
-//				if(articles == null) {
-//					articles = new ArrayList<Article>();
-//				}
-//				for (int i=0;i< art.getQty(); i++) {
-//					articles.add(article);
-//				}
-//				cart.setArticles(articles);
-//				res.status= Status.OK;
-//				return res;
-//
-//			}
-//		} catch (DataException e) {
-//			throw new DataException("Cet article n'existe pas \n"+e.getMessage());
-//		}
-//
-//	}
-//
+		if (art.getQty() < 0) {
+			res.status = SimpleResponse.Status.ERROR;
+			res.message = "La quantité de l'article doit être positive";
+			return res;
+		}
+
+		Article article= articleService.findById(art.getId());
+		if(article== null) {
+			res.status = SimpleResponse.Status.ERROR;
+			res.message = "Cet article n'existe pas";
+			return res;
+		}
+		else {
+			Cart cart = cartService.findByCustomerId(id);
+			if (cart == null) {
+				cart = new Cart(id);
+				cartService.save(cart);
+			}
+
+			List<CartElement> elements = cart.getElements();
+
+			if (elements == null) elements = new ArrayList<CartElement>();
+
+			boolean alreadyExist = false;
+			for (CartElement element : elements) {
+				if (element.getArticle().getId() == article.getId()) {
+					alreadyExist = true;
+					element.setQuantite(element.getQuantite() + art.getQty());
+				}
+			}
+			if (!alreadyExist) elements.add(new CartElement(article, art.getQty()));
+			cartService.save(cart);
+
+			System.out.println(
+					"********************\n"
+							+ "***** " + String.format("Add Article %d x [%d] to cart", art.getQty(), article.getId()) + "\n"
+							+ "********************"
+			);
+
+
+			res.status = SimpleResponse.Status.OK;
+
+			return res;
+
+		}
+
+	}
+
+
+	@ResponseBody
+	@PostMapping(path="/{id}/update.json",consumes="application/json")
+	public SimpleResponse update(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
+
+		SimpleResponse res = new SimpleResponse();
+
+		Article article= articleService.findById(art.getId());
+		Cart cart = cartService.findByCustomerId(id);
+		if (cart==null) {
+			res.status = SimpleResponse.Status.ERROR;
+			res.message = "Ce panier n'existe pas";
+		} else {
+
+			for (CartElement element : cart.getElements()) {
+				if (element.getArticle().getId()==article.getId()) {
+					element.setQuantite(art.getQty());
+				}
+			}
+			cartService.save(cart);
+
+			System.out.println(
+					"********************\n"
+							+ "***** " + String.format("Update Article [%d] quantity %d in cart", article.getId(), art.getQty()) + "\n"
+							+ "********************"
+			);
+
+			res.status = SimpleResponse.Status.OK;
+		}
+
+		return res;
+	}
+
+	@ResponseBody
+	@PostMapping(path="/{id}/remove.json",consumes="application/json")
+	public SimpleResponse remove(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
+
+		SimpleResponse res = new SimpleResponse();
+
+		Cart cart = cartService.findByCustomerId(id);
+		if (cart==null) {
+
+			res.status = SimpleResponse.Status.ERROR;
+			res.message = "Ce panier n'existe pas";
+			return res;
+		} else {
+
+			for (CartElement ce: cart.getElements()) {
+				if (ce.getArticle().getId()==art.getId()) {
+
+					cart.getElements().remove(ce);
+					System.out.println(
+							"********************\n"
+									+ "***** " + String.format("Remove Article [%d] from cart", art.getId()) + "\n"
+									+ "********************"
+					);
+					cartService.save(cart);
+
+					res.status = SimpleResponse.Status.OK;
+					return res;
+
+				}
+
+			}
+
+			res.status = SimpleResponse.Status.ERROR;
+			res.message = "Cet article n'est pas dans le panier";
+			return res;
+
+		}
+
+	}
+
 //	@RequestMapping("/{id}/validate.html")
 //	public String validateCart(@PathVariable(name="id") int id, Model model) throws DataException {
 //
