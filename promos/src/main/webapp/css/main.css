@@ -41,14 +41,6 @@ ul.articles li {
 .articleInput {
 	border-radius: 6px;
 	padding: .5em;
-	background-color: #F8F8F8;
-	margin: .2em 0;
-}
-
-.articleInputSelected {
-	border-radius: 6px;
-	padding: .5em;
-	background-color: #DFF0D8;
 	margin: .2em 0;
 }
 
