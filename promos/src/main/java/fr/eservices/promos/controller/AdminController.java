@@ -49,6 +49,7 @@ public class AdminController {
             if (promo.getStart() != null && promo.getEnd() != null && promo.getEnd().compareTo(promo.getStart()) >= 0) {
                 switch(promo.getPromoType().getType()){
                     case "PROMOTION":
+                        promo.setOnCart(false);
                         promo.setY(0);
                         promo.setCode(null);
                         promo.setCustomerLimit(0);
@@ -59,6 +60,7 @@ public class AdminController {
                             case "X+1 gratuit":
                                 promo.setY(0);
                             case "Le lot de X à Y€":
+                                promo.setOnCart(true);
                                 if(promo.getX()%1 != 0)
                                     return "redirect:promos?erreur=xint";
                                 break;
@@ -105,6 +107,13 @@ public class AdminController {
         selectedArticles.add(idArticleAsInt);
         return 1;
     }
+    @ResponseBody
+    @PostMapping(path="/removePromo")
+    public void removePromo(@RequestBody String idPromo) {
+        int idPromoAsInt = Integer.parseInt(idPromo.substring(0, idPromo.length()-1));
+        promoService.delete(idPromoAsInt);
+    }
+
 
     @ResponseBody
     @PostMapping(path="/adaptForm")
@@ -112,81 +121,90 @@ public class AdminController {
         switch(promoType.charAt(0)){
             case '1':
                 return "<div class='form-group'>\n" +
-                        "                <label>Pourcentage</label>\n" +
+                        "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>";
             case '2':
                 return "<div class='form-group'>\n" +
-                        "                <label>Valeur</label>\n" +
+                        "                <label for='x'>Valeur</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
                         "            </div>";
             case '3':
-                return "<div class='form-group'>\n" +
-                        "                <label>Pourcentage</label>\n" +
+                return "" +
+                        "            <div class='form-group'>\n" +
+                        "                <input type=\"checkbox\" id=\"onCart\" name=\"onCart\"/>\n" +
+                        "                <label for='onCart'>Appliquer la promotion à l'ensemble du panier</label>\n" +
+                        "            </div>\n" +
+                        "            <div class='form-group'>\n" +
+                        "                <label for='x'>Pourcentage</label>\n" +
                         "                <form type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Nombre de clients max</label>\n" +
+                        "                <label for='customerLimit'>Nombre de clients max</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Code</label>\n" +
+                        "                <label for='code'>Code</label>\n" +
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '4':
-                return "<div class='form-group'>\n" +
-                        "                <label>Valeur</label>\n" +
+                return "" +
+                        "            <div class='form-group'>\n" +
+                        "                <input type=\"checkbox\" id=\"onCart\" name=\"onCart\"/>\n" +
+                        "                <label for='onCart'>Appliquer la promotion à l'ensemble du panier</label>\n" +
+                        "            </div>\n" +
+                        "                <label for='x'>Valeur</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Nombre de clients max</label>\n" +
+                        "                <label for='customerLimit'>Nombre de clients max</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Code</label>\n" +
+                        "                <label for='code'>Code</label>\n" +
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '5':
                 return "<div class='form-group'>\n" +
-                        "                <label>Valeur X</label>\n" +
+                        "                <label for='x'>Valeur X</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Nombre de clients max</label>\n" +
+                        "                <label for='customerLimit'>Nombre de clients max</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Code</label>\n" +
+                        "                <label for='code'>Code</label>\n" +
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '6':
                 return "<div class='form-group'>\n" +
-                        "                <label>Pourcentage</label>\n" +
+                        "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Nombre de clients max</label>\n" +
+                        "                <label for='customerLimit'>Nombre de clients max</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Code</label>\n" +
+                        "                <label for='code'>Code</label>\n" +
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '7':
                 return "<div class='form-group'>\n" +
-                        "                <label>Valeur X</label>\n" +
+                        "                <label for='x'>Valeur X</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Valeur Y</label>\n" +
+                        "                <label for='y'>Valeur Y</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='y' name='y'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Nombre de clients max</label>\n" +
+                        "                <label for='customerLimit'>Nombre de clients max</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
-                        "                <label>Code</label>\n" +
+                        "                <label for='code'>Code</label>\n" +
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             default:

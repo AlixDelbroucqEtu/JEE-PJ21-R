@@ -39,6 +39,9 @@ public class Promo {
 
     private String code;
 
+    @Column(name = "on_cart")
+    private Boolean onCart;
+
     public int getId() {
         return id;
     }
@@ -109,5 +112,13 @@ public class Promo {
 
     public void setArticles(List<Article> articles) {
         this.articles = articles;
+    }
+
+    public Boolean getOnCart() {
+        return onCart;
+    }
+
+    public void setOnCart(Boolean onCart) {
+        this.onCart = onCart;
     }
 }
