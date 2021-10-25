@@ -67,7 +67,7 @@ $(".removeFromCart").click( function(e) {
 		url: "cart/1/remove.json",
 		dataType: "json",
 		contentType: 'application/json',
-		data:{ ref }
+		data: JSON.stringify( {id: ref, qty: 0} )
 	}).done(function(data){
 		$.ajax({
 			url: "cart/1.html"

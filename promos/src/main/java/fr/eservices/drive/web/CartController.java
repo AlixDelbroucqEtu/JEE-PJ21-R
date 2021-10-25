@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -165,41 +166,41 @@ public class CartController {
 	
 	@ResponseBody
 	@PostMapping(path="/{id}/remove.json",consumes="application/json")
-	public SimpleResponse remove(@PathVariable(name="id") int id, @RequestBody String elementId) throws DataException {
-
+	public SimpleResponse remove(@PathVariable(name="id") int id, @RequestBody CartEntry art) throws DataException {
+		
 		SimpleResponse res = new SimpleResponse();
 		
 		Cart cart = daoCart.getCartContent(id);
 		if (cart==null) {
+			
 			res.status = Status.ERROR;
 			res.message = "Ce panier n'existe pas";
+			return res;
 		} else {
-		
-			//cart.getElements().remove(element);
+			
 			for (CartElement ce: cart.getElements()) {
-				System.out.println("DELETE " + ce.getArticle().getId());
-				System.out.println("DELETE " + elementId);
-				System.out.println(ce.getArticle().getId().equals(elementId));
-				if (ce.getArticle().getId().equals(elementId)) {
+				if (ce.getArticle().getId().equals(art.getId())) {
+			
 					cart.getElements().remove(ce);
-
+					System.out.println(
+							"********************\n"
+									+ "***** " + String.format("Remove Article [%s] from cart", art.getId()) + "\n" 
+									+ "********************"
+							);
+			
+					res.status = Status.OK;
+					return res;
+					
 				}
+				
 			}
 			
-			System.out.println(
-					"********************\n"
-							+ "***** " + String.format("Remove Article [%s] from cart", elementId) + "\n" 
-							+ "********************"
-					);
+			res.status = Status.ERROR;
+			res.message = "Cet article n'est pas dans le panier";
+			return res;
 			
-			for (CartElement ce: cart.getElements()) {
-				System.out.println(ce.getArticle().getId());
-			}
-			
-			res.status = Status.OK;
 		}
-		
-		return res;
+
 	}
 	
 
