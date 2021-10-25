@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -113,7 +114,7 @@ public class CartController {
 				
 				System.out.println(
 						"********************\n"
-								+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), article) + "\n" 
+								+ "***** " + String.format("Add Article %d x [%s] to cart", art.getQty(), article.getId()) + "\n" 
 								+ "********************"
 						);
 				
@@ -139,20 +140,64 @@ public class CartController {
 		
 		Article article= daoArticle.find(art.getId());
 		Cart cart = daoCart.getCartContent(id);
+		if (cart==null) {
+			res.status = Status.ERROR;
+			res.message = "Cet article n'existe pas";
+		} else {
 		
-		for (CartElement element : cart.getElements()) {
-			if (element.getArticle().getId().equals(article.getId())) {
-				element.setQuantite(art.getQty());
+			for (CartElement element : cart.getElements()) {
+				if (element.getArticle().getId().equals(article.getId())) {
+					element.setQuantite(art.getQty());
+				}
 			}
+			
+			System.out.println(
+					"********************\n"
+							+ "***** " + String.format("Update Article [%s] quantity %d in cart", article.getId(), art.getQty()) + "\n" 
+							+ "********************"
+					);
+			
+			res.status = Status.OK;
 		}
 		
-		System.out.println(
-				"********************\n"
-						+ "***** " + String.format("Update Article [%s] quantity %d in cart", article, art.getQty()) + "\n" 
-						+ "********************"
-				);
+		return res;
+	}
+	
+	@ResponseBody
+	@PostMapping(path="/{id}/remove.json",consumes="application/json")
+	public SimpleResponse remove(@PathVariable(name="id") int id, @RequestBody String elementId) throws DataException {
+
+		SimpleResponse res = new SimpleResponse();
 		
-		res.status = Status.OK;
+		Cart cart = daoCart.getCartContent(id);
+		if (cart==null) {
+			res.status = Status.ERROR;
+			res.message = "Ce panier n'existe pas";
+		} else {
+		
+			//cart.getElements().remove(element);
+			for (CartElement ce: cart.getElements()) {
+				System.out.println("DELETE " + ce.getArticle().getId());
+				System.out.println("DELETE " + elementId);
+				System.out.println(ce.getArticle().getId().equals(elementId));
+				if (ce.getArticle().getId().equals(elementId)) {
+					cart.getElements().remove(ce);
+
+				}
+			}
+			
+			System.out.println(
+					"********************\n"
+							+ "***** " + String.format("Remove Article [%s] from cart", elementId) + "\n" 
+							+ "********************"
+					);
+			
+			for (CartElement ce: cart.getElements()) {
+				System.out.println(ce.getArticle().getId());
+			}
+			
+			res.status = Status.OK;
+		}
 		
 		return res;
 	}

@@ -27,7 +27,7 @@
 							<c:out value="${article.name}"/> <br/>
 						</a>
 						<div style="position: absolute; margin-left:60px;">
-							Quantité <input type="number" min="0" value="1" id= "quantity<c:out value="${article.id}"/>" style="width: 50px; text-align: center;"/>
+							Quantité <input type="number" min="1" value="1" id= "quantity<c:out value="${article.id}"/>" style="width: 50px; text-align: center;"/>
 						</div>	
 						<div>
 							<span class="glyphicon glyphicon-plus-sign addToCart" data-ref="<c:out value="${article.id}"/>"></span>
