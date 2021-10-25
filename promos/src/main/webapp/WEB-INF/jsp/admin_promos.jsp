@@ -63,13 +63,6 @@
                 </form:select>
             </div>
             <div class="form-group">
-                <label for='inputArticles'>Article(s) concerné(s)</label>
-                <input id="inputArticles" class="form-control" type="text" maxlength="30" placeholder="Chercher un article..."/>
-            </div>
-            <div id="selectedArticles">
-
-            </div>
-            <div class="form-group">
                 <label for='start'>Date de début</label>
                 <form:input type="date" class="form-control" path="start"></form:input>
             </div>

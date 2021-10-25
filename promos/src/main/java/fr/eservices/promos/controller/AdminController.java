@@ -52,25 +52,40 @@ public class AdminController {
 
     @PostMapping(path = "/promo")
     public String addPromo(@ModelAttribute Promo promo, Model model) {
-        if(!selectedArticles.isEmpty()) {
+
             if (promo.getStart() != null && promo.getEnd() != null && promo.getEnd().compareTo(promo.getStart()) >= 0) {
                 switch(promo.getPromoType().getType()){
+                    //UNE PROMOTION S'APPLIQUE A UN ARTICLE. IL S'AGIT D'UNE REDUCTION DE LA VALEUR D'UN ARTICLE EN POURCENTAGE OU EN EUROS.
                     case "PROMOTION":
-                        promo.setOnCart(false);
-                        promo.setY(0);
-                        promo.setCode(null);
-                        promo.setCustomerLimit(0);
-                        break;
+                        if(!selectedArticles.isEmpty()) {
+                            promo.setOnCart(false);
+                            promo.setY(0);
+                            promo.setCode(null);
+                            promo.setCustomerLimit(0);
+                        }else {
+                            return "redirect:promos?erreur=article";
+                        }
+                    break;
+                        //UNE OFFRE MARKETING S'APPLIQUE FORCEMENT A L'ENSEMBLE DU PANIER. ELLE PEUT DEPENDRE DE L'ACHAT D'UN ARTICLE PRECIS DANS UNE CERTAINE QUANTITE.
+                        //ELLE PEUT ETRE APPLIQUEE SI UN CODE EST RENSEIGNE ET A UN NOMBRE LIMITE DE CLIENTS.
                     case "OFFRE MARKETING":
                         switch(promo.getPromoType().getName()){
                             case "Le 2ème à X%":
                             case "X+1 gratuit":
                                 promo.setY(0);
                             case "Le lot de X à Y€":
-                                promo.setOnCart(true);
+                                if(!selectedArticles.isEmpty()) {
+                                    promo.setOnCart(true);
+                                }else {
+                                    return "redirect:promos?erreur=article";
+                                }
                                 if(promo.getX()%1 != 0)
                                     return "redirect:promos?erreur=xint";
                                 break;
+                            default:
+                                selectedArticles.clear();
+                                promo.setOnCart(false);
+                                promo.setY(0);
                         }
                         break;
                 }
@@ -84,8 +99,7 @@ public class AdminController {
                 return "redirect:promos";
             }
             return "redirect:promos?erreur=date";
-        }
-        return "redirect:promos?erreur=article";
+
     }
 
     @InitBinder
@@ -127,21 +141,29 @@ public class AdminController {
     public String adaptForm(@RequestBody String promoType) {
         switch(promoType.charAt(0)){
             case '1':
-                return "<div class='form-group'>\n" +
+                return "<div class=\"form-group\">\n" +
+                        "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "            </div>\n" +
+                        "            <div id=\"selectedArticles\">\n" +
+                        "\n" +
+                        "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>";
             case '2':
-                return "<div class='form-group'>\n" +
+                return "<div class=\"form-group\">\n" +
+                        "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "            </div>\n" +
+                        "            <div id=\"selectedArticles\">\n" +
+                        "\n" +
+                        "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
                         "            </div>";
             case '3':
                 return "" +
-                        "            <div class='form-group'>\n" +
-                        "                <input type=\"checkbox\" id=\"onCart\" name=\"onCart\"/>\n" +
-                        "                <label for='onCart'>Appliquer la promotion à l'ensemble du panier</label>\n" +
-                        "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
@@ -157,9 +179,6 @@ public class AdminController {
             case '4':
                 return "" +
                         "            <div class='form-group'>\n" +
-                        "                <input type=\"checkbox\" id=\"onCart\" name=\"onCart\"/>\n" +
-                        "                <label for='onCart'>Appliquer la promotion à l'ensemble du panier</label>\n" +
-                        "            </div>\n" +
                         "                <label for='x'>Valeur</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
                         "            </div>\n" +
@@ -172,7 +191,13 @@ public class AdminController {
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '5':
-                return "<div class='form-group'>\n" +
+                return "<div class=\"form-group\">\n" +
+                        "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "            </div>\n" +
+                        "            <div id=\"selectedArticles\">\n" +
+                        "\n" +
+                        "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
                         "            </div>\n" +
@@ -185,7 +210,13 @@ public class AdminController {
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '6':
-                return "<div class='form-group'>\n" +
+                return "<div class=\"form-group\">\n" +
+                        "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "            </div>\n" +
+                        "            <div id=\"selectedArticles\">\n" +
+                        "\n" +
+                        "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>\n" +
@@ -198,7 +229,13 @@ public class AdminController {
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '7':
-                return "<div class='form-group'>\n" +
+                return "<div class=\"form-group\">\n" +
+                        "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "            </div>\n" +
+                        "            <div id=\"selectedArticles\">\n" +
+                        "\n" +
+                        "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
                         "            </div>\n" +
