@@ -1,11 +1,8 @@
 package fr.eservices.promos.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
-
+@Embeddable
 public class UsedPromoPk implements Serializable {
     private long customer;
     private long promo;

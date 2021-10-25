@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import fr.eservices.promos.model.Promo;
 import fr.eservices.promos.repository.PromoRepository;
 
+
 @Service
 public class PromoService {
     
@@ -35,7 +36,7 @@ public class PromoService {
      * @return l'ensemble des offres marketing créées
      */
     public List<Promo> findMarketingCampain(){
-        return (List<Promo>)promoRepository.findByType("OFFRE_MARKETING");
+        return (List<Promo>)promoRepository.findAllMarketingCampains();
     }
 }
 

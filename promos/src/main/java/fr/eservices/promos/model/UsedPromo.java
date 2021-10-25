@@ -10,11 +10,9 @@ import java.io.Serializable;
 public class UsedPromo implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @Id
-    @JoinColumn(name = "id")
     private Customer customer;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @Id
-    @JoinColumn(name = "id")
     private Promo promo;
 }
