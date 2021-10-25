@@ -53,53 +53,54 @@ public class AdminController {
     @PostMapping(path = "/promo")
     public String addPromo(@ModelAttribute Promo promo, Model model) {
 
-            if (promo.getStart() != null && promo.getEnd() != null && promo.getEnd().compareTo(promo.getStart()) >= 0) {
-                switch(promo.getPromoType().getType()){
-                    //UNE PROMOTION S'APPLIQUE A UN ARTICLE. IL S'AGIT D'UNE REDUCTION DE LA VALEUR D'UN ARTICLE EN POURCENTAGE OU EN EUROS.
-                    case "PROMOTION":
-                        if(!selectedArticles.isEmpty()) {
-                            promo.setOnCart(false);
-                            promo.setY(0);
-                            promo.setCode(null);
-                            promo.setCustomerLimit(0);
-                        }else {
-                            return "redirect:promos?erreur=article";
-                        }
-                    break;
+        if (promo.getStart() != null && promo.getEnd() != null && promo.getEnd().compareTo(promo.getStart()) >= 0) {
+            switch(promo.getPromoType().getType()){
+                //UNE PROMOTION S'APPLIQUE A UN ARTICLE. IL S'AGIT D'UNE REDUCTION DE LA VALEUR D'UN ARTICLE EN POURCENTAGE OU EN EUROS.
+                case "PROMOTION":
+                    if(!selectedArticles.isEmpty()) {
+                        promo.setOnCart(false);
+                        promo.setY(0);
+                        promo.setCode(null);
+                        promo.setCustomerLimit(0);
+                    }else {
+                        return "redirect:promos?erreur=article";
+                    }
+                break;
                         //UNE OFFRE MARKETING S'APPLIQUE FORCEMENT A L'ENSEMBLE DU PANIER. ELLE PEUT DEPENDRE DE L'ACHAT D'UN ARTICLE PRECIS DANS UNE CERTAINE QUANTITE.
                         //ELLE PEUT ETRE APPLIQUEE SI UN CODE EST RENSEIGNE ET A UN NOMBRE LIMITE DE CLIENTS.
-                    case "OFFRE MARKETING":
-                        switch(promo.getPromoType().getName()){
-                            case "Le 2ème à X%":
-                            case "X+1 gratuit":
-                                promo.setY(0);
-                            case "Le lot de X à Y€":
-                                if(!selectedArticles.isEmpty()) {
-                                    promo.setOnCart(true);
-                                }else {
-                                    return "redirect:promos?erreur=article";
-                                }
-                                if(promo.getX()%1 != 0)
-                                    return "redirect:promos?erreur=xint";
-                                break;
-                            default:
-                                selectedArticles.clear();
-                                promo.setOnCart(false);
-                                promo.setY(0);
-                        }
-                        break;
-                }
-                promoService.saveOrUpdate(promo);
-                for (Article article : articleService.findAll()) {
-                    if (selectedArticles.contains(article.getId())) {
+                case "OFFRE MARKETING":
+                    switch(promo.getPromoType().getName()) {
+                        case "Le 2ème à X%":
+                        case "X+1 gratuit":
+                            promo.setY(0);
+                        case "Le lot de X à Y€":
+                            if (!selectedArticles.isEmpty()) {
+                                promo.setOnCart(true);
+                            } else {
+                                return "redirect:promos?erreur=article";
+                            }
+                            if (promo.getX() % 1 != 0)
+                                return "redirect:promos?erreur=xint";
+                            break;
+                        default:
+                            selectedArticles.clear();
+                            promo.setOnCart(false);
+                            promo.setY(0);
+                    }
+                break;
+            }
+            promoService.saveOrUpdate(promo);
+            for (Article article : articleService.findAll()) {
+                if (selectedArticles.contains(article.getId())) {
+                    //PRIORITE DES PROMO SUR LES ARTICLES => 5 > 6 > 7 > 2 > 1
+                    //LES OFFRES COMMERCIALES 3 ET 4 REPRESENTENT UNE REMISE BRUTE SUR PANIER SANS CONDITION DE SELECTION D'ARTICLES ET NE SONT DONC PAS LIE A UN OU DES ARTICLES
                         article.setPromo(promo);
                         articleService.saveOrUpdate(article);
-                    }
                 }
-                return "redirect:promos";
             }
-            return "redirect:promos?erreur=date";
-
+            return "redirect:promos";
+        }
+        return "redirect:promos?erreur=date";
     }
 
     @InitBinder
@@ -141,22 +142,22 @@ public class AdminController {
     public String adaptForm(@RequestBody String promoType) {
         switch(promoType.charAt(0)){
             case '1':
-                return "<div class=\"form-group\">\n" +
+                return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
-                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
-                        "            <div id=\"selectedArticles\">\n" +
+                        "            <div id='selectedArticles'>\n" +
                         "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>";
             case '2':
-                return "<div class=\"form-group\">\n" +
+                return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
-                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
-                        "            <div id=\"selectedArticles\">\n" +
+                        "            <div id='selectedArticles'>\n" +
                         "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur</label>\n" +
@@ -191,11 +192,11 @@ public class AdminController {
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '5':
-                return "<div class=\"form-group\">\n" +
+                return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
-                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
-                        "            <div id=\"selectedArticles\">\n" +
+                        "            <div id='selectedArticles'>\n" +
                         "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +
@@ -210,11 +211,11 @@ public class AdminController {
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '6':
-                return "<div class=\"form-group\">\n" +
+                return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
-                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
-                        "            <div id=\"selectedArticles\">\n" +
+                        "            <div id='selectedArticles'>\n" +
                         "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
@@ -229,11 +230,11 @@ public class AdminController {
                         "                <input class='form-control' maxlength='20' id='code' name='code'/>\n" +
                         "            </div>";
             case '7':
-                return "<div class=\"form-group\">\n" +
+                return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
-                        "                <input id=\"inputArticles\" class=\"form-control\" type=\"text\" maxlength=\"30\" placeholder=\"Chercher un article...\"/>\n" +
+                        "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
-                        "            <div id=\"selectedArticles\">\n" +
+                        "            <div id='selectedArticles'>\n" +
                         "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +

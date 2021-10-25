@@ -72,6 +72,13 @@
             </div>
             <div id="adaptativeFields">
                 <div class="form-group">
+                    <label for='inputArticles'>Article(s) concerné(s)</label>
+                    <input onKeyUp='searchArticles()' id="inputArticles" class="form-control" type="text" maxlength="30" placeholder="Chercher un article..."/>
+                </div>
+                <div id="selectedArticles">
+
+                </div>
+                <div class="form-group">
                     <label for='x'>Pourcentage</label>
                     <form:input type='number' min='0' max='100' step='.01' class="form-control" path="x"></form:input>
                 </div>
@@ -97,6 +104,7 @@
                 <div class="panel-body">
                     <ul>
                         <li>Type : ${promo.promoType.type}</li>
+                        <li>Nom : ${promo.promoType.name}</li>
                         <li>X : ${promo.x}</li>
                         <li>Y : ${promo.y}</li>
                         <li>Debut : ${promo.start}</li>
@@ -115,7 +123,7 @@
 
         const selectedArticles = new Map();
 
-        $("#inputArticles").keyup(function () {
+        function searchArticles(){
             $("#selectedArticles").empty();
             $.ajax({
                 url: 'match',
@@ -129,7 +137,7 @@
                     }
                 }
             });
-        });
+        }
 
         $("#promoType").change(function () {
             $("#adaptativeFields").empty();
