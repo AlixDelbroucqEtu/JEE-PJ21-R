@@ -21,9 +21,6 @@ public class PromoType {
 
     private String name;
 
-    @OneToMany(mappedBy = "promoType")
-    private List<Promo> promos;
-
     public int getId() {
         return id;
     }
@@ -48,11 +45,4 @@ public class PromoType {
         this.name = name;
     }
 
-    public List<Promo> getPromos() {
-        return promos;
-    }
-
-    public void setPromos(List<Promo> promos) {
-        this.promos = promos;
-    }
 }

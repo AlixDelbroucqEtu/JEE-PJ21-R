@@ -16,12 +16,9 @@ public class ArticleService {
     public List<Article> find(String inputArticle) {
         return articleRepository.findByReferenceStartsWithIgnoreCaseOrLibelleStartsWithIgnoreCaseOrMarqueStartsWithIgnoreCase(inputArticle, inputArticle, inputArticle);
     }
+
     public List<Article> findAll() {
         return (List<Article>) articleRepository.findAll();
-    }
-
-    public Article getPromoById(int id) {
-        return articleRepository.findById(id).get();
     }
 
     public void saveOrUpdate(Article article) {

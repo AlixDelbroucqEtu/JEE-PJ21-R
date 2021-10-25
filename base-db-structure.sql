@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `promos` (
     `code` VARCHAR(20),
     `on_cart` BOOLEAN,
 	PRIMARY KEY (`id`),
-    FOREIGN KEY (`type` ) REFERENCES promo_types(`id`);
+    FOREIGN KEY (`type` ) REFERENCES promo_types(`id`)
 );
 
 CREATE TABLE IF NOT EXISTS `article`(
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `article`(
     `promo` int,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`cat_id`) REFERENCES category(`id`),
-    FOREIGN KEY (`promo`) REFERENCES promos(`id`) ON DELETE CASCADE
+    FOREIGN KEY (`promo`) REFERENCES promos(`id`) ON DELETE SET NULL
 );
 
 INSERT INTO `article` (reference, libelle, marque, perished_date, cat_id, price)

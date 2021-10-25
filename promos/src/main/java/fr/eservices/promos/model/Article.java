@@ -97,4 +97,5 @@ public class Article {
 	public void setPromo(Promo promo) {
 		this.promo = promo;
 	}
+
 }

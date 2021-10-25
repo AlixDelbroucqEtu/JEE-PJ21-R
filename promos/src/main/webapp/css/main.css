@@ -45,7 +45,14 @@ ul.articles li {
 	margin: .2em 0;
 }
 
-.articleInput:hover {
+.articleInputSelected {
+	border-radius: 6px;
+	padding: .5em;
+	background-color: #DFF0D8;
+	margin: .2em 0;
+}
+
+.articleInput:hover, .articleInputSelected:hover {
 	cursor: pointer;
 }
 

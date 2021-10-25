@@ -19,9 +19,6 @@ public class Promo {
     @JoinColumn(name = "type")
     private PromoType promoType;
 
-    @OneToMany(mappedBy = "promo")
-    private List<Article> articles;
-
     private float x;
 
     private float y;
@@ -104,14 +101,6 @@ public class Promo {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
     }
 
     public Boolean getOnCart() {

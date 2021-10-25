@@ -70,11 +70,11 @@
 
             </div>
             <div class="form-group">
-                <label for='start'>Date de debut (yyyy-MM-dd)</label>
+                <label for='start'>Date de début</label>
                 <form:input type="date" class="form-control" path="start"></form:input>
             </div>
             <div class="form-group">
-                <label for='end'>Date de fin (yyyy-MM-dd)</label>
+                <label for='end'>Date de fin</label>
                 <form:input type="date" class="form-control" path="end"></form:input>
             </div>
             <div id="adaptativeFields">
