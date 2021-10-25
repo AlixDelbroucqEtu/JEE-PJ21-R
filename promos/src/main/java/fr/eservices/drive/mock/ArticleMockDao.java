@@ -1,16 +1,24 @@
 package fr.eservices.drive.mock;
 
 import java.util.HashMap;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import fr.eservices.drive.dao.ArticleDao;
+import fr.eservices.drive.dao.DataException;
 import fr.eservices.drive.model.Article;
+import fr.eservices.drive.model.Cart;
+import fr.eservices.drive.model.CartElement;
 
 @Component
 @Qualifier("mock")
 public class ArticleMockDao implements ArticleDao {
+	
+	@Autowired
+	private CartMockDao cartDao;
 	
 	private HashMap<String, Article> arts = new HashMap<>();
 	
@@ -80,6 +88,23 @@ public class ArticleMockDao implements ArticleDao {
 	@Override
 	public Article find(String id) {
 		return arts.get(id);
+	}
+	
+	public HashMap<String, Article> getArticles() {
+		return arts;
+	}
+	
+	public boolean isInCart(String articleId, int cartId) throws DataException {
+		Cart cart = cartDao.getCartContent(cartId);
+		if (cart==null) return false;
+		List<CartElement> elements = cart.getElements();
+		for (CartElement ce : elements) {
+			if (ce.getArticle().getId().equals(articleId)) {
+				return true;
+			}
+		}
+		return false;
+		
 	}
 
 }

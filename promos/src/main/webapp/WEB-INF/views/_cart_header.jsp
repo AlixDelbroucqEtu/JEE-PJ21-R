@@ -17,7 +17,7 @@
 				<td colspan="2"><c:out value="${element.article.name}"/></td>
 			</tr>
 			<tr>
-				<td>Quantité : <input type="number" min="0" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>
+				<td>Quantité : <input type="number" min="1" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>
 				<fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${element.article.price*element.quantite/100}" />
 				<td align="right"><c:out value="${formattedPrice}"/> &euro;</td> 
 			</tr>
@@ -27,12 +27,12 @@
 </c:choose>
 </br>
 <a class="btn btn-primary" href="cart/1/validate.html">Commander</a>
-
+	
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
 function cartQuantityChanged(textbox,id) {
 	var textInput = document.getElementById(textbox).value;
-	if (textInput==null || textInput<0 || textInput=="") {
+	if (textInput==null || textInput<=0 || textInput=="") {
 		document.getElementById(textbox).value = 1;
 		textInput=1;
 	}

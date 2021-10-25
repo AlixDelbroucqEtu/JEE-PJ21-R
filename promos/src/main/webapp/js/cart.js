@@ -9,12 +9,18 @@ $(function() {
 	
 	$(".addToCart").click( function(e) {
 		var ref = $(this).data("ref");
+		var quantity = document.getElementById("quantity".concat(ref)).value;
+		if (quantity<=1) {
+			alert(quantity.concat(" article ajouté au panier"));
+		} else {
+			alert(quantity.concat(" articles ajoutés au panier"));
+		}
 		$.ajax({
 			method: 'POST',
 			url: "cart/1/add.json",
 			dataType: "json",
 			contentType: 'application/json',
-			data: JSON.stringify( {id: ref, qty: 1} )
+			data: JSON.stringify( {id: ref, qty: quantity} )
 		}).done(function(data){
 			$.ajax({
 				url: "cart/1.html"
