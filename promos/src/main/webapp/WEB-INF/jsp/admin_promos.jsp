@@ -63,23 +63,23 @@
                 </form:select>
             </div>
             <div class="form-group">
-                <label>Article(s) concerné(s)</label>
+                <label for='inputArticles'>Article(s) concerné(s)</label>
                 <input id="inputArticles" class="form-control" type="text" maxlength="30" placeholder="Chercher un article..."/>
             </div>
             <div id="selectedArticles">
 
             </div>
             <div class="form-group">
-                <label>Date de debut (yyyy-MM-dd)</label>
+                <label for='start'>Date de debut (yyyy-MM-dd)</label>
                 <form:input type="date" class="form-control" path="start"></form:input>
             </div>
             <div class="form-group">
-                <label>Date de fin (yyyy-MM-dd)</label>
+                <label for='end'>Date de fin (yyyy-MM-dd)</label>
                 <form:input type="date" class="form-control" path="end"></form:input>
             </div>
             <div id="adaptativeFields">
                 <div class="form-group">
-                    <label>Pourcentage</label>
+                    <label for='x'>Pourcentage</label>
                     <form:input type='number' min='0' max='100' step='.01' class="form-control" path="x"></form:input>
                 </div>
 
@@ -97,9 +97,9 @@
     </div>
     <div class="panel-body">
         <c:forEach items="${promos}" var="promo">
-            <div class="panel panel-warning">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Promo #${promo.id}</h3>
+            <div id='promo${promo.id}' class="panel panel-warning">
+                <div class="panel-heading" style="display:flex;justify-content: space-between;align-items: baseline;">
+                    <h3 class="panel-title">Promo #${promo.id}</h3><button onclick="removePromo(${promo.id})" class="float-right btn btn-danger">Supprimer</button>
                 </div>
                 <div class="panel-body">
                     <ul>
@@ -110,6 +110,7 @@
                         <li>Fin : ${promo.end}</li>
                         <li>Nombre de clients max : ${promo.customerLimit}</li>
                         <li>Code : ${promo.code}</li>
+                        <li>Appliqué sur le panier : ${promo.onCart}</li>
                     </ul>
                 </div>
             </div>
@@ -162,6 +163,18 @@
                 }
             });
         };
+
+        function removePromo(id) {
+            $.ajax({
+                url: 'removePromo',
+                method: 'POST',
+                async: false,
+                data: id.toString(),
+                success: function (data) {
+                    $("#promo"+id).remove();
+                }
+            });
+        }
 
 </script>
 
