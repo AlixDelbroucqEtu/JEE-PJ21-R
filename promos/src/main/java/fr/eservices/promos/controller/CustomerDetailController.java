@@ -5,6 +5,7 @@ import java.util.Optional;
 
 
 import fr.eservices.promos.model.Customer;
+import fr.eservices.promos.model.Promo;
 import fr.eservices.promos.model.UsedPromo;
 import fr.eservices.promos.repository.CustomerRepository;
 import fr.eservices.promos.repository.UsedPromoRepository;
@@ -35,10 +36,10 @@ public class CustomerDetailController {
 
         // use repo to get orders of a customer 
         Customer customer = customerService.findById(custId);
-        List<UsedPromo> promo_used = used_promoService.findAllByCustomer_Id(custId);
+        List<Promo> promo = used_promoService.findByCustomer(customer.getId());
         // assign in model as "orders"
         model.addAttribute("customer", customer);
-        model.addAttribute("used_promo", promo_used);
+        model.addAttribute("promos", promo);
         // return order list view
 
         return "customer_detail_list";
