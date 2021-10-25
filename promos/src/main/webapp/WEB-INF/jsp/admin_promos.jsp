@@ -120,6 +120,8 @@
 
 <script>
 
+        const selectedArticles = new Map();
+
         $("#inputArticles").keyup(function () {
             $("#selectedArticles").empty();
             $.ajax({
@@ -129,7 +131,8 @@
                 data: $("#inputArticles").val(),
                 success: function (data) {
                     for(i=0; i<data.length; i++){
-                        $("#selectedArticles").append("<div onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'><div class='articleInputLib'>"+data[i].libelle+"</div><div class='articleInputMarque'>"+data[i].marque+"</div><div class='articleInputPrix'>"+data[i].price+"€</div></div>");
+                        const color = selectedArticles.has(data[i].id) ? '#DFF0D8' : '#F8F8F8';
+                        $("#selectedArticles").append("<div style='background-color: "+ color +"' onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'><div class='articleInputLib'>"+data[i].libelle+"</div><div class='articleInputMarque'>"+data[i].marque+"</div><div class='articleInputPrix'>"+data[i].price+"€</div></div>");
                     }
                 }
             });
@@ -157,8 +160,10 @@
                 success: function (data) {
                     if(data==0){
                         $("#articleInput"+id).css('background-color','#F8F8F8');
+                        selectedArticles.delete(id);
                     }else{
                         $("#articleInput"+id).css('background-color','#DFF0D8');
+                        selectedArticles.set(id, true);
                     }
                 }
             });

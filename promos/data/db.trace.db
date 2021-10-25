@@ -3736,3 +3736,15 @@ CREATE TABLE IF NOT EXISTS `promos` (
 2021-10-25 12:39:57 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement ")[*]"; SQL statement:
 ) [42000-200]
+2021-10-25 12:47:38 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROMOS" not found; SQL statement:
+select promo0_.id as id1_3_, promo0_.code as code2_3_, promo0_.customer_limit as customer3_3_, promo0_.end as end4_3_, promo0_.on_cart as on_cart5_3_, promo0_.type as type9_3_, promo0_.start as start6_3_, promo0_.x as x7_3_, promo0_.y as y8_3_ from promos promo0_ [42102-200]
+2021-10-25 12:47:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROMOS" not found; SQL statement:
+select promo0_.id as id1_3_, promo0_.code as code2_3_, promo0_.customer_limit as customer3_3_, promo0_.end as end4_3_, promo0_.on_cart as on_cart5_3_, promo0_.type as type9_3_, promo0_.start as start6_3_, promo0_.x as x7_3_, promo0_.y as y8_3_ from promos promo0_ [42102-200]
+2021-10-25 12:47:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROMOS" not found; SQL statement:
+select promo0_.id as id1_3_, promo0_.code as code2_3_, promo0_.customer_limit as customer3_3_, promo0_.end as end4_3_, promo0_.on_cart as on_cart5_3_, promo0_.type as type9_3_, promo0_.start as start6_3_, promo0_.x as x7_3_, promo0_.y as y8_3_ from promos promo0_ [42102-200]
+2021-10-25 12:47:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PROMOS" not found; SQL statement:
+select promo0_.id as id1_3_, promo0_.code as code2_3_, promo0_.customer_limit as customer3_3_, promo0_.end as end4_3_, promo0_.on_cart as on_cart5_3_, promo0_.type as type9_3_, promo0_.start as start6_3_, promo0_.x as x7_3_, promo0_.y as y8_3_ from promos promo0_ [42102-200]

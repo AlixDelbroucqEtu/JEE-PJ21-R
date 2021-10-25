@@ -137,7 +137,7 @@ public class AdminController {
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
-                        "                <form type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='customerLimit'>Nombre de clients max</label>\n" +
