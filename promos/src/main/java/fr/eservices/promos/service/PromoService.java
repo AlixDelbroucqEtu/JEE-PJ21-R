@@ -29,5 +29,13 @@ public class PromoService {
     public void delete(int id) {
         promoRepository.deleteById(id);
     }
+
+    /**
+     * Récupère tous les champs pormo du type offre marketing
+     * @return l'ensemble des offres marketing créées
+     */
+    public List<Promo> findMarketingCampain(){
+        return (List<Promo>)promoRepository.findByType("OFFRE_MARKETING");
+    }
 }
 

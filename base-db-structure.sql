@@ -55,3 +55,15 @@ INSERT INTO `article` (reference, libelle, marque, perished_date, cat_id, price)
     ('HVDA1', 'Haricots Verts', 'Daussy', TO_DATE('01/08/2023', 'DD/MM/YYYY'), 1, 2.09),
     ('MYHZ3', 'Mayonnaise', 'Heinz', TO_DATE('30/11/2021', 'DD/MM/YYYY'), 3, 1.40),
     ('DEAX2', 'Déodorant', 'Axe', NULL, 2, 2.49);
+
+CREATE TABLE `customer`(
+    `id`     INT NOT NULL,
+    `pseudo` VARCHAR(25)
+);
+
+CREATE TABLE `used_promo`(
+    `customer_id` INT NOT NULL,
+    `promo_id`    INT NOT NULL,
+    foreign key (`customer_id`) references customer (`id`),
+    foreign key (`promo_id`) references Promo (`id`)
+);
