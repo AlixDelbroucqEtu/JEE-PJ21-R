@@ -17,7 +17,7 @@
         <h3 class="panel-title">Customer page</h3>
     </div>
     <div class="panel-body">
-        <c:forEach items="${used_promo}" var="promo">
+        <c:forEach items="${promos}" var="promo">
 
             <div class="panel panel-warning">
                 <div class="panel-heading">

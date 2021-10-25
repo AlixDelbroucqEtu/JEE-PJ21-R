@@ -1,5 +1,7 @@
 package fr.eservices.promos.service;
 
+import fr.eservices.promos.model.Customer;
+import fr.eservices.promos.model.Promo;
 import fr.eservices.promos.model.PromoType;
 import fr.eservices.promos.model.UsedPromo;
 import fr.eservices.promos.repository.PromoTypeRepository;
@@ -20,8 +22,8 @@ public class Used_PromoService {
         return (List<UsedPromo>) usedPromoRepository.findAll();
     }
 
-    public List<UsedPromo> findAllByCustomer_Id(Integer id) {
-        return usedPromoRepository.findAllByCustomer_Id(id);
+    public List<Promo> findByCustomer(Integer id) {
+        return usedPromoRepository.findByCustomer(id);
     }
 
 }

@@ -6,19 +6,30 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name="customers")
+@Table(name="customer")
 public class Customer  {
 
-    private Long id;
+    private Integer id;
 
     private String pseudo;
 
-    public void setId(Long id) {
+    public Customer() {
+    }
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
     @Id
-    public Long getId() {
+    public Integer getId() {
         return id;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 }
