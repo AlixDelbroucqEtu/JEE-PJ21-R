@@ -18,6 +18,8 @@ public class Article {
 
 	private String marque;
 
+	private String img;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "perished_date")
@@ -96,6 +98,14 @@ public class Article {
 
 	public void setPromo(Promo promo) {
 		this.promo = promo;
+	}
+
+	public String getImg() {
+		return this.img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 }

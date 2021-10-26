@@ -17,12 +17,12 @@
 		<c:forEach items="${articles}" var="article">
 
 					<li>
-
 						<a href="#">
 							<span class="price">
-								<c:out value="${article.price}"/> &euro;
+							    <fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${article.price}" />
+								<c:out value="${formattedPrice}"/> &euro;
 							</span>
-
+                            <img src="<c:out value="${article.img}"/>"/><br/>
 							<c:out value="${article.libelle}"/> <br/>
 						</a>
 						<div style="position: absolute; margin-left:60px;">
