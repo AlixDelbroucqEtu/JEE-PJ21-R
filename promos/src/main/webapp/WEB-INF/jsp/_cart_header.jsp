@@ -14,18 +14,20 @@
 		<table width="300">
 		<c:forEach items="${cart.elements}" var="element">
 			<tr>
-
+                <td rowspan="2"><img width="50" height="50" src="<c:out value="${element.article.img}"/>"/></td>
 				<td><c:out value="${element.article.libelle}"/></td>
 				<td align="right"><span class="glyphicon glyphicon-remove removeFromCart" style="color:red" data-ref="<c:out value="${element.article.id}"/>"></span></td>
 			</tr>
 			<tr>
 				<td>Quantité : <input type="number" min="1" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>
-				<td align="right"><c:out value="${element.article.price*element.quantite}"/> &euro;</td>
+				<fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${element.article.price*element.quantite}" />
+				<td align="right"><c:out value="${formattedPrice}"/> &euro;</td>
 				<c:set var="total" value="${total + (element.article.price*element.quantite)}" scope="page" />
 			</tr>
 		</c:forEach>
 		</table>
-		<div align="right" style="margin-top:10px; font-weight: bold;">Total : <c:out value="${total}"/> &euro;</div>
+		<fmt:formatNumber var="formattedTotal" type="number" minFractionDigits="2" maxFractionDigits="2" value="${total}" />
+		<div align="right" style="margin-top:10px; font-weight: bold;">Total : <c:out value="${formattedTotal}"/> &euro;</div>
 
 	</c:otherwise>
 </c:choose>
