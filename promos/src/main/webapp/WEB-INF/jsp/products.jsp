@@ -20,11 +20,20 @@
 						<a href="#">
 							<span class="price">
 							  <fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${article.price}" />
-								<span style="${article.promo.promoType.getId() < 5 ? 'text-decoration: line-through' : ''}">
-									<c:out value="${formattedPrice}"/>
-								</span>
-								<c:if test="${article.promo != null}">
-									<fmt:formatNumber 
+								<%-- Display correct price depending on promo --%>
+								<c:choose>
+									<%-- No promo applicable --%>
+									<c:when test="${article.promo == null || !article.promo.isDateValid()}">
+										<c:out value="${formattedPrice}"/>
+									</c:when>
+									<%-- Absolute & pourcentage promos --%>
+									<c:when test="${article.promo.promoType.getId() < 5}">
+										<%-- Old price --%>
+										<span style="text-decoration: line-through">
+											<c:out value="${formattedPrice}" />
+										</span>
+										<%-- Price after promo --%>
+										<fmt:formatNumber 
 										var="afterPromoPrice" 
 										type="number" 
 										minFractionDigits="2" 
@@ -34,11 +43,16 @@
 												:
 												article.price - (article.promo.getX() / 100) * article.price
 											}" 
-									/>
-									<span>
-										<c:out value="${afterPromoPrice}"/>
-									</span>
-								</c:if>
+										/>
+										<span>
+											<c:out value="${afterPromoPrice}"/>
+										</span>
+									</c:when>
+									<%-- Special marketing promo --%>
+									<c:otherwise>
+										<span>Special marketing promo</span>
+									</c:otherwise>
+								</c:choose>
 								&euro;
 							</span>
 							<img width="170" height="170" src="<c:out value="${article.img}"/>"/>

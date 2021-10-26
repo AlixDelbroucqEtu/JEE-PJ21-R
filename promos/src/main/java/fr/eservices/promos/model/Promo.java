@@ -39,6 +39,11 @@ public class Promo {
     @Column(name = "on_cart")
     private Boolean onCart;
 
+    public Boolean isDateValid() {
+        Date today = new Date();
+        return today.after(start) && today.before(end);
+    }
+
     public int getId() {
         return id;
     }
