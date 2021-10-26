@@ -1,10 +1,6 @@
 package fr.eservices.promos.model;
 
 import javax.persistence.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import fr.eservices.promos.repository.PromoRepository;
 import fr.eservices.promos.service.PromoService;
 
 @Entity

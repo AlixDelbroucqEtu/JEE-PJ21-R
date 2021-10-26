@@ -1,7 +1,6 @@
 package fr.eservices.promos.model;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Category {

@@ -1,7 +1,5 @@
 package fr.eservices.promos.repository;
 
-
-import fr.eservices.promos.model.Customer;
 import fr.eservices.promos.model.Promo;
 import fr.eservices.promos.model.UsedPromo;
 import org.springframework.data.jpa.repository.Query;

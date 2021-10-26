@@ -12,9 +12,16 @@ import fr.eservices.promos.dto.CartEntry;
 import fr.eservices.promos.dto.SimpleResponse;
 import fr.eservices.promos.model.Article;
 import fr.eservices.promos.model.CartElement;
+import fr.eservices.promos.model.Customer;
+import fr.eservices.promos.model.Promo;
+import fr.eservices.promos.model.UsedPromo;
 import fr.eservices.promos.repository.OrderRepository;
 import fr.eservices.promos.service.ArticleService;
 import fr.eservices.promos.service.CartService;
+import fr.eservices.promos.service.CustomerService;
+import fr.eservices.promos.service.PromoService;
+import fr.eservices.promos.service.Used_PromoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -36,6 +43,15 @@ public class CartController {
 
 	@Autowired
 	OrderRepository orderRepository;
+
+	@Autowired
+	PromoService promoService;
+
+	@Autowired
+	CustomerService customerService;
+
+	@Autowired
+	Used_PromoService used_PromoService;
 
 
 	@ExceptionHandler(DataException.class)
@@ -96,14 +112,19 @@ public class CartController {
 
 			if (elements == null) elements = new ArrayList<CartElement>();
 
-			boolean alreadyExist = false;
+			CartElement currentElement = null;
 			for (CartElement element : elements) {
 				if (element.getArticle().getId() == article.getId()) {
-					alreadyExist = true;
 					element.setQuantite(element.getQuantite() + art.getQty());
+					currentElement = element;
 				}
 			}
-			if (!alreadyExist) elements.add(new CartElement(article, art.getQty()));
+
+			if (currentElement == null) {
+				currentElement = new CartElement(article, art.getQty());
+				elements.add(currentElement);
+			}
+
 			cartService.save(cart);
 
 			System.out.println(
@@ -192,6 +213,44 @@ public class CartController {
 
 		}
 
+	}
+
+	@ResponseBody
+	@PostMapping(path="/{id}/promo-code")
+	public SimpleResponse addPromoCode(@PathVariable(name="id") int id, @RequestBody String code) throws DataException {
+
+		SimpleResponse res = new SimpleResponse();
+
+		Cart cart = cartService.findByCustomerId(id);
+		if (cart==null) {
+			res.status = SimpleResponse.Status.ERROR;
+			res.message = "Ce panier n'existe pas";
+			return res;
+		} else {
+
+			// Add promo to cart articles
+			Promo promo = promoService.findByCode(code);
+
+			for (CartElement ce: cart.getElements()) {
+				ce.getArticle().setPromo(promo);
+			}
+
+			cartService.save(cart);
+
+			// Set promo as used
+			Customer customer = customerService.findById(id);
+			UsedPromo usedPromo = new UsedPromo(customer, promo);
+			used_PromoService.save(usedPromo);
+
+			res.status = SimpleResponse.Status.OK;
+			return res;
+		}
+
+	}
+
+	@RequestMapping("/{id}/validate")
+	public String validateCart(@PathVariable(name="id") int id, Model model) {
+		return "redirect:/articles";
 	}
 
 //	@RequestMapping("/{id}/validate.html")
