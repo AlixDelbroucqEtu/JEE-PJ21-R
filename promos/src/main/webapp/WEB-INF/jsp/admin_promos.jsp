@@ -131,7 +131,6 @@
 
         function searchArticles(){
             $("#selectedArticles").empty();
-            console.log($("#category").children("option:selected").val());
             $.ajax({
                 url: 'match',
                 method: 'POST',

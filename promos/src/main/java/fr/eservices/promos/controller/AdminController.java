@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.eservices.promos.model.Article;
+import fr.eservices.promos.model.Category;
 import fr.eservices.promos.service.ArticleService;
 import fr.eservices.promos.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,14 +151,21 @@ public class AdminController {
     @ResponseBody
     @PostMapping(path="/adaptForm")
     public String adaptForm(@RequestBody String promoType) {
+        String optionsCategories = "";
+        for (Category category: categoryService.findAll()){
+            optionsCategories += "<option value='"+category.getId()+"'>"+category.getName()+"</option>";
+        }
         switch(promoType.charAt(0)){
             case '1':
                 return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <select name='category' id='category'>\n" +
+                        "                   <option selected value='0'>Toutes les catégories</option>\n" +
+                        optionsCategories+
+                        "               </select>\n" +
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
-                        "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
@@ -165,6 +173,10 @@ public class AdminController {
             case '2':
                 return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <select name='category' id='category'>\n" +
+                        "                   <option selected value='0'>Toutes les catégories</option>\n" +
+                        optionsCategories+
+                        "               </select>\n" +
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
@@ -204,6 +216,10 @@ public class AdminController {
             case '5':
                 return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <select name='category' id='category'>\n" +
+                        "                   <option selected value='0'>Toutes les catégories</option>\n" +
+                        optionsCategories+
+                        "               </select>\n" +
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
@@ -223,6 +239,10 @@ public class AdminController {
             case '6':
                 return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <select name='category' id='category'>\n" +
+                        "                   <option selected value='0'>Toutes les catégories</option>\n" +
+                        optionsCategories+
+                        "               </select>\n" +
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
@@ -242,10 +262,13 @@ public class AdminController {
             case '7':
                 return "             <div class='form-group'>\n" +
                         "                <label for='inputArticles'>Article(s) concerné(s)</label>\n" +
+                        "                <select name='category' id='category'>\n" +
+                        "                   <option selected value='0'>Toutes les catégories</option>\n" +
+                        optionsCategories+
+                        "               </select>\n" +
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
-                        "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +
                         "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
