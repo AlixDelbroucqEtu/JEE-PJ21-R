@@ -45,8 +45,7 @@ public class AdminController {
     @GetMapping(path = "/marketingCampaign")
     public String manageMaketingCampain(Model model) {
         model.addAttribute("Promo", new Promo());
-        model.addAttribute("promos", promoService.findAll());
-        model.addAttribute("marketing_campain", promoService.findMarketingCampain());
+        model.addAttribute("promos", promoService.findMarketingCampain());
         return "admin_marketing_campaign";
     }
 
