@@ -3,6 +3,7 @@ package fr.eservices.promos.controller;
 import fr.eservices.promos.exception.DataException;
 import fr.eservices.promos.model.Article;
 import fr.eservices.promos.service.ArticleService;
+import fr.eservices.promos.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,13 @@ public class HomeController {
     @Autowired
     ArticleService articleService;
 
+    @Autowired
+    CartService cartService;
+
     @GetMapping(path="/articles")
     public String getCart(Model model) throws DataException {
         List<Article> articles = articleService.findAll();
-        //model.addAttribute("daoArticle",daoArticle);
+        model.addAttribute("cartService",cartService);
         model.addAttribute("articles",articles);
         return "products";
     }

@@ -15,8 +15,8 @@
 	<c:otherwise>
 		<ul class="articles">
 		<c:forEach items="${articles}" var="article">
-
-					<li>
+                    <c:set var="isInCart" value="${cartService.isInCart(1, article.id)}" scope="page" />
+					<li <c:if test="${isInCart}">style="border: solid green 2px;"</c:if>>
 						<a href="#">
 							<span class="price">
 							    <fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${article.price}" />
@@ -25,12 +25,20 @@
                             <img src="<c:out value="${article.img}"/>"/><br/>
 							<c:out value="${article.libelle}"/> <br/>
 						</a>
-						<div style="position: absolute; margin-left:60px;">
-							Quantité <input type="number" min="1" value="1" id= "quantity<c:out value="${article.id}"/>" style="width: 50px; text-align: center;"/>
-						</div>
-						<div>
-							<span class="glyphicon glyphicon-plus-sign addToCart" data-ref="<c:out value="${article.id}"/>"></span>
-						</div>
+
+						<c:choose>
+                        	<c:when test="${isInCart}">
+                                <p style="color:green;">Déjà dans le panier</p>
+                        	</c:when>
+                        	<c:otherwise>
+                                <div style="position: absolute; margin-left:60px;">
+                                    Quantité <input type="number" min="1" value="1" id= "quantity<c:out value="${article.id}"/>" style="width: 50px; text-align: center;"/>
+                                </div>
+                                <div>
+                                    <span class="glyphicon glyphicon-plus-sign addToCart" data-ref="<c:out value="${article.id}"/>"></span>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
 					</li>
 		</c:forEach>
 		</ul>
