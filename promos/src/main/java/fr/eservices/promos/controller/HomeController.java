@@ -21,7 +21,6 @@ public class HomeController {
     @GetMapping(path="/articles")
     public String getCart(Model model) throws DataException {
         List<Article> articles = articleService.findAll();
-        //model.addAttribute("daoArticle",daoArticle);
         model.addAttribute("articles",articles);
         return "products";
     }

@@ -19,10 +19,30 @@
 					<li>
 						<a href="#">
 							<span class="price">
-							    <fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${article.price}" />
-								<c:out value="${formattedPrice}"/> &euro;
+							  <fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${article.price}" />
+								<span style="${article.promo.promoType.getId() < 5 ? 'text-decoration: line-through' : ''}">
+									<c:out value="${formattedPrice}"/>
+								</span>
+								<c:if test="${article.promo != null}">
+									<fmt:formatNumber 
+										var="afterPromoPrice" 
+										type="number" 
+										minFractionDigits="2" 
+										maxFractionDigits="2" 
+										value="${article.promo.promoType.getId() % 2 == 0 ?
+												article.price - article.promo.getX()
+												:
+												article.price - (article.promo.getX() / 100) * article.price
+											}" 
+									/>
+									<span>
+										<c:out value="${afterPromoPrice}"/>
+									</span>
+								</c:if>
+								&euro;
 							</span>
-                            <img src="<c:out value="${article.img}"/>"/><br/>
+							<img width="170" height="170" src="<c:out value="${article.img}"/>"/>
+							<br/>
 							<c:out value="${article.libelle}"/> <br/>
 						</a>
 						<div style="position: absolute; margin-left:60px;">
