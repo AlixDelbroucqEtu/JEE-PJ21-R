@@ -41,7 +41,6 @@ public class CustomerDetailController {
         else{
              promo = used_promoService.findByCustomer(customer.getId());
         }
-
         // assign in model as "orders"
         model.addAttribute("customer", customer);
         model.addAttribute("promos", promo);
