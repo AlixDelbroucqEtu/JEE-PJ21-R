@@ -25,12 +25,12 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public void delete(int id) {
-        articleRepository.deleteById(id);
-    }
-
     public Article findById(int id) {
         return articleRepository.findById(id).get();
+    }
+
+    public List<Article> findWhereCategory(String substring, int categoryId){
+        return articleRepository.findWhereCategory(substring, categoryId);
     }
 }
 

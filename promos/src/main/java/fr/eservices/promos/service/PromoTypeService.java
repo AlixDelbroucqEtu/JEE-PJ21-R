@@ -18,15 +18,4 @@ public class PromoTypeService {
         return (List<PromoType>) promoTypeRepository.findAll();
     }
 
-    public PromoType getPromoTypeById(int id) {
-        return promoTypeRepository.findById(id).get();
-    }
-
-    public void saveOrUpdate(PromoType promoType) {
-        promoTypeRepository.save(promoType);
-    }
-
-    public void delete(int id) {
-        promoTypeRepository.deleteById(id);
-    }
 }

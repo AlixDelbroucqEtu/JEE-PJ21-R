@@ -14,8 +14,5 @@ public class CartEntry {
     public int getQty() {
         return qty;
     }
-    public void setQty(int qty) {
-        this.qty = qty;
-    }
 
 }

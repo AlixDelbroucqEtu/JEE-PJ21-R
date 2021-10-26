@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import fr.eservices.promos.model.Article;
 import fr.eservices.promos.service.ArticleService;
+import fr.eservices.promos.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,9 @@ public class AdminController {
     ArticleService articleService;
 
     @Autowired
+    CategoryService categoryService;
+
+    @Autowired
     PromoService promoService;
 
     List<Integer> selectedArticles = new ArrayList<>();
@@ -40,6 +45,7 @@ public class AdminController {
         model.addAttribute("promos", promoService.findAll());
         model.addAttribute("promoTypes", promoTypeService.findAll());
         model.addAttribute("articles", articleService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "admin_promos";
     }
     @GetMapping(path = "/marketingCampaign")
@@ -111,9 +117,14 @@ public class AdminController {
 
     @ResponseBody
     @PostMapping(path="/match")
-    public List<Article> getArticleMatching(@RequestBody String inputArticle) {
-        if(inputArticle.length() > 0)
-            return articleService.find(inputArticle.substring(0, inputArticle.length()-1));
+    public List<Article> getArticleMatching(@RequestBody Map<String, String> data) {
+        if(data.get("input").length() > 0) {
+            if(Integer.parseInt(data.get("idcat")) == 0){
+                return articleService.find(data.get("input").substring(0, data.get("input").length()-1));
+            }else{
+                return articleService.findWhereCategory(data.get("input").substring(0, data.get("input").length()-1), Integer.parseInt(data.get("idcat")));
+            }
+        }
         return null;
     }
 

@@ -18,7 +18,6 @@ public class Used_PromoService {
     private UsedPromoRepository usedPromoRepository;
 
     public List<UsedPromo> findAll() {
-
         return (List<UsedPromo>) usedPromoRepository.findAll();
     }
 

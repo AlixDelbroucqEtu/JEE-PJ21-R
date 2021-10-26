@@ -73,6 +73,12 @@
             <div id="adaptativeFields">
                 <div class="form-group">
                     <label for='inputArticles'>Article(s) concerné(s)</label>
+                    <select name="category" id="category">
+                        <option selected value="0">Toutes les catégories</option>
+                        <c:forEach items="${categories}" var="category">
+                            <option value="${category.id}">${category.name}</option>
+                        </c:forEach>
+                    </select>
                     <input onKeyUp='searchArticles()' id="inputArticles" class="form-control" type="text" maxlength="30" placeholder="Chercher un article..."/>
                 </div>
                 <div id="selectedArticles">
@@ -125,13 +131,16 @@
 
         function searchArticles(){
             $("#selectedArticles").empty();
+            console.log($("#category").children("option:selected").val());
             $.ajax({
                 url: 'match',
                 method: 'POST',
                 async: false,
-                data: $("#inputArticles").val(),
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify( {input: $("#inputArticles").val(), idcat: $("#category").children("option:selected").val()} ),
                 success: function (data) {
-                    for(i=0; i<data.length; i++){
+                    for(let i=0; i<data.length; i++){
                         const color = selectedArticles.has(data[i].id) ? '#DFF0D8' : '#F8F8F8';
                         $("#selectedArticles").append("<div style='background-color: "+ color +"' onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'><div class='articleInputLib'>"+data[i].libelle+"</div><div class='articleInputMarque'>"+data[i].marque+"</div><div class='articleInputPrix'>"+data[i].price+"€</div></div>");
                     }
