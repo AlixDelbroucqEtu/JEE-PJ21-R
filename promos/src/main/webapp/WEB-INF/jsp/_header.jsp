@@ -33,7 +33,8 @@ java.util.List<String> jsList = new java.util.ArrayList<>();
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Admin</a></li>
+        <li class="active"><a href="/articles">Articles</a></li>
+        <li class="active"><a href="/admin/promos">Admin</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
