@@ -35,6 +35,7 @@ java.util.List<String> jsList = new java.util.ArrayList<>();
       <ul class="nav navbar-nav">
         <li class="active"><a href="/articles">Articles</a></li>
         <li class="active"><a href="/admin/promos">Admin</a></li>
+        <li class="active"><a href="/customer_detail/1.html">Mes promos utilisées</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
