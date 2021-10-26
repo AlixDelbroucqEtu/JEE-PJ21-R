@@ -2,8 +2,10 @@ DROP TABLE IF EXISTS ARTICLE;
 DROP TABLE IF EXISTS PROMOS;
 DROP TABLE IF EXISTS CATEGORY;
 DROP TABLE IF EXISTS PROMO_TYPES;
-DROP TABLE IF EXISTS used_promo;
-DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS USED_PROMO;
+DROP TABLE IF EXISTS CUSTOMER;
+DROP TABLE IF EXISTS CART;
+DROP TABLE IF EXISTS CARTELEMENT;
 
 
 CREATE TABLE IF NOT EXISTS `promo_types` (
@@ -34,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `promos` (
     `code` VARCHAR(20),
     `on_cart` BOOLEAN,
 	PRIMARY KEY (`id`),
-    FOREIGN KEY (`type` ) REFERENCES promo_types(`id`)
+    FOREIGN KEY (`type` ) REFERENCES promo_types(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `article`(
@@ -47,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `article`(
     `price` decimal NOT NULL,
     `promo` int,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`cat_id`) REFERENCES category(`id`),
+    FOREIGN KEY (`cat_id`) REFERENCES category(`id`) ON DELETE SET NULL,
     FOREIGN KEY (`promo`) REFERENCES promos(`id`) ON DELETE SET NULL
 );
 
@@ -59,18 +61,32 @@ INSERT INTO `article` (reference, libelle, marque, perished_date, cat_id, price)
     ('MYHZ3', 'Mayonnaise', 'Heinz', TO_DATE('30/11/2021', 'DD/MM/YYYY'), 3, 1.40),
     ('DEAX2', 'Déodorant', 'Axe', NULL, 2, 2.49);
 
-CREATE TABLE `customer`
-(
+CREATE TABLE IF NOT EXISTS `customer`(
     `id`     INT NOT NULL AUTO_INCREMENT,
     `pseudo` VARCHAR(25)
 );
 
-INSERT INTO `customer` (pseudo) VALUES ('Gaston');
+INSERT INTO `customer` (id, pseudo) VALUES (1, 'Gaston');
 
-CREATE TABLE `used_promo`
+CREATE TABLE IF NOT EXISTS `used_promo`
 (
     `customer_id` INT NOT NULL,
     `promo_id`    INT NOT NULL,
-    FOREIGN KEY (`customer_id`) REFERENCES customer (`id`),
-    FOREIGN KEY  (`promo_id`)  REFERENCES Promos (`id`)
+    FOREIGN KEY (`customer_id`) REFERENCES customer (`id`) ON DELETE CASCADE,
+    FOREIGN KEY  (`promo_id`)  REFERENCES Promos (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `cart`(
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `customerid` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`customerid`) REFERENCES customer(`id`) ON DELETE CASCADE 
+);
+
+CREATE TABLE IF NOT EXISTS `cartelement`(
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `quantite` INT NOT NULL,
+    `article_id` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`article_id`) REFERENCES article(`id`) ON DELETE CASCADE
 );
