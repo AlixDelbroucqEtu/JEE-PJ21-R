@@ -38,5 +38,9 @@ public class PromoService {
     public List<Promo> findMarketingCampain(){
         return (List<Promo>)promoRepository.findAllMarketingCampains();
     }
+
+    public Promo findByCode(String code) {
+        return (Promo) promoRepository.findByCode(code);
+    }
 }
 

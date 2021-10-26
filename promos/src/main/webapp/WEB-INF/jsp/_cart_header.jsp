@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <h2 align="center">Panier</h2>
 </br>
@@ -13,16 +14,75 @@
 		<c:set var="total" value="0" scope="page" />
 		<table width="300">
 		<c:forEach items="${cart.elements}" var="element">
-			<tr>
-                <td rowspan="2"><img width="50" height="50" src="<c:out value="${element.article.img}"/>"/></td>
-				<td><c:out value="${element.article.libelle}"/></td>
-				<td align="right"><span class="glyphicon glyphicon-remove removeFromCart" style="color:red" data-ref="<c:out value="${element.article.id}"/>"></span></td>
-			</tr>
-			<tr>
-				<td>Quantité : <input type="number" min="1" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>
-				<fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${element.article.price*element.quantite}" />
-				<td align="right"><c:out value="${formattedPrice}"/> &euro;</td>
-				<c:set var="total" value="${total + (element.article.price*element.quantite)}" scope="page" />
+			<tr style="border: 1px black solid;border-radius: 15px;">
+				<tr>
+					<td rowspan="2"><img width="50" height="50" src="<c:out value="${element.article.img}"/>"/></td>
+					<td><c:out value="${element.article.libelle}"/></td>
+					<td align="right"><span class="glyphicon glyphicon-remove removeFromCart" style="color:red" data-ref="<c:out value="${element.article.id}"/>"></span></td>
+				</tr>
+				<tr>
+					<td>Quantité : <input type="number" min="1" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>
+					<fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${element.article.price*element.quantite}" />
+					<td align="right">
+						<c:out value="${formattedPrice}"/>
+						&nbsp; ➜ &nbsp;
+						<c:choose>
+							<%-- Pas de promo --%>
+							<c:when test="${element.article.promo == null || !element.article.promo.isDateValid()}">
+							</c:when>
+							<%-- Absolute & pourcentage promos --%>
+							<c:when test="${element.article.promo.promoType.getId() < 3}">
+								<%-- Price after promo --%>
+								<fmt:formatNumber 
+								var="afterPromoPrice" 
+								type="number" 
+								minFractionDigits="2" 
+								maxFractionDigits="2" 
+								value="${element.article.promo.promoType.getId() % 2 == 0 ?
+										(element.article.price - element.article.promo.getX()) * element.quantite
+										:
+										(element.article.price - (element.article.promo.getX() / 100) * element.article.price) * element.quantite
+									}" 
+								/>
+								<b>
+									<c:out value="${afterPromoPrice}"/> €
+								</b>
+							</c:when>
+							<%-- Special marketing promo on articles --%>
+							<c:when test="${element.article.promo.promoType.getId() > 4}">
+								<fmt:formatNumber 
+									var="afterPromoPrice" 
+									type="number" 
+									minFractionDigits="2" 
+									maxFractionDigits="2" 
+									value="${element.getPriceAfterPromo()}" 
+								/>
+								<b>
+									<c:out value="${afterPromoPrice}"/> €
+								</b>
+								<br/>
+								<fmt:formatNumber 
+									var="promoX" 
+									type="number" 
+									minFractionDigits="0"
+									maxFractionDigits="0" 
+									value="${element.article.promo.getX()}" 
+								/>
+								<fmt:formatNumber 
+									var="promoY" 
+									type="number" 
+									minFractionDigits="0"
+									maxFractionDigits="0" 
+									value="${element.article.promo.getY()}" 
+								/>
+								<c:set var="offer" value="${fn:replace(element.article.promo.promoType.getName(), 'X', promoX)}" />
+								${fn:replace(offer, "Y", promoY)}
+							</c:when>
+						</c:choose>
+					</td>
+					<%-- <c:set var="total" value="${total + (element.article.price*element.quantite)}" scope="page" /> --%>
+					<c:set var="total" value="${total + (element.getPriceAfterPromo())}" scope="page" />
+				</tr>
 			</tr>
 		</c:forEach>
 		</table>
