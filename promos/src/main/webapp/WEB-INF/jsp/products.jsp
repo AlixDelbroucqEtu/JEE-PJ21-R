@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <h1>Les Articles</h1>
@@ -27,7 +28,7 @@
 										<c:out value="${formattedPrice}"/>
 									</c:when>
 									<%-- Absolute & pourcentage promos --%>
-									<c:when test="${article.promo.promoType.getId() < 5}">
+									<c:when test="${article.promo.promoType.getId() < 3}">
 										<%-- Old price --%>
 										<span style="text-decoration: line-through">
 											<c:out value="${formattedPrice}" />
@@ -48,10 +49,27 @@
 											<c:out value="${afterPromoPrice}"/>
 										</span>
 									</c:when>
-									<%-- Special marketing promo --%>
-									<c:otherwise>
-										<span>Special marketing promo</span>
-									</c:otherwise>
+									<%-- Special marketing promo on articles --%>
+									<c:when test="${article.promo.promoType.getId() > 4}">
+										<fmt:formatNumber 
+											var="promoX" 
+											type="number" 
+											minFractionDigits="0"
+											maxFractionDigits="0" 
+											value="${article.promo.getX()}" 
+										/>
+										<fmt:formatNumber 
+											var="promoY" 
+											type="number" 
+											minFractionDigits="0"
+											maxFractionDigits="0" 
+											value="${article.promo.getY()}" 
+										/>
+										<c:set var="offer" value="${fn:replace(article.promo.promoType.getName(), 'X', promoX)}" />
+										${fn:replace(offer, "Y", promoY)}
+										&nbsp; | &nbsp;
+										<c:out value="${formattedPrice}"/>
+									</c:when>
 								</c:choose>
 								&euro;
 							</span>

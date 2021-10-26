@@ -28,9 +28,9 @@ ul.articles li {
 
 .articles .price {
 	position: absolute;
-	width: 80px;
+	width: 250px;
 	height: 25px;
-	margin-left: 139px;
+	margin-left: -40px;
 	margin-top: -11px;
 	background-color: white;
 	border : solid #CCC 1px;
