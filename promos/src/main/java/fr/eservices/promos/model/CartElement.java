@@ -2,6 +2,11 @@ package fr.eservices.promos.model;
 
 import javax.persistence.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import fr.eservices.promos.repository.PromoRepository;
+import fr.eservices.promos.service.PromoService;
+
 @Entity
 public class CartElement {
 
@@ -22,13 +27,19 @@ public class CartElement {
 
     public CartElement() {}
 
-    public double getPriceAfterPromo () {
+    public double getPriceAfterPromo (String code) {
         Promo promo = article.getPromo();
         double total = article.getPrice() * quantite;
 
         // No promo to consider
         if (promo == null || !promo.isDateValid()) {
             return total;
+        }
+
+        // Any promo code ?
+        if (code != null) {
+            PromoService promoService = new PromoService();
+            promo = promoService.findByCode(code);
         }
 
         // Marketing
