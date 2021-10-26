@@ -24,31 +24,48 @@ public class CartElement {
 
     public double getPriceAfterPromo () {
         Promo promo = article.getPromo();
-        double defaultTotal = article.getPrice() * quantite;
+        double total = article.getPrice() * quantite;
+
         // No promo to consider
         if (promo == null || !promo.isDateValid()) {
-            return defaultTotal;
+            return total;
         }
 
+        // Marketing
         switch (promo.getPromoType().getId()) {
-            case 1: // product absolute value
-            case 3:
-                defaultTotal = defaultTotal - promo.getX() * quantite;
-            case 2: // product percentage
-            case 4:
-                defaultTotal = defaultTotal - (defaultTotal * (promo.getX() / 100)) * quantite;
-            case 5: // x + 1 gratuit
-                if (quantite < promo.getX()) return defaultTotal;
-                return defaultTotal - article.getPrice();
-            case 6: // 2ème à X%
-                if (quantite < 2) return defaultTotal;
-                return  defaultTotal - (defaultTotal * (promo.getX() / 100));
-            case 7: // lot de x à y €
-                if (quantite < promo.getX()) return defaultTotal;
-                return defaultTotal - (article.getPrice() * promo.getX()) + promo.getY();
-            default:
-                return defaultTotal;
+            case 5: // X + 1 gratuit
+                if (quantite >= promo.getX()) {
+                    total = total - article.getPrice();
+                    break;
+                }
+            case 6: // 2eme a X %
+                if (quantite >= 2) {
+                    total = total - (article.getPrice() * (promo.getX() / 100));
+                    break;
+                }
+            case 7:
+                if (quantite >= promo.getX()) {
+                    total = total - (promo.getX() * article.getPrice()) + promo.getY();
+                    break;
+                }
+            case 4: // Valeur fixe panier
+                total = total - promo.getX();
+                break;
+            case 3: // Pourcentage panier
+                total = total - (total * (promo.getX() / 100));
+                break;
         }
+
+        // Promo
+        switch (promo.getPromoType().getId()) {
+            case 1: // Pourcentage produit
+                total = total - (quantite * (article.getPrice() * (promo.getX() / 100)));
+                break;
+            case 2: // Valeur absolue produit
+                total = total - (quantite * promo.getX());
+        }
+
+        return total;
     }
 
     public Article getArticle() {

@@ -23,7 +23,8 @@
 				<td>Quantité : <input type="number" min="1" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>
 				<fmt:formatNumber var="formattedPrice" type="number" minFractionDigits="2" maxFractionDigits="2" value="${element.article.price*element.quantite}" />
 				<td align="right"><c:out value="${formattedPrice}"/></td>
-				<c:set var="total" value="${total + (element.article.price*element.quantite)}" scope="page" />
+				<%-- <c:set var="total" value="${total + (element.article.price*element.quantite)}" scope="page" /> --%>
+				<c:set var="total" value="${total + (element.getPriceAfterPromo())}" scope="page" />
 				<br>
 				<td>
 					<c:choose>
@@ -69,7 +70,7 @@
 							${fn:replace(offer, "Y", promoY)}
 							&nbsp; | &nbsp;
 							<b>
-								<c:out value="${formattedPrice}"/> €
+								<c:out value="${element.getPriceAfterPromo()}"/> €
 							</b>
 						</c:when>
 					</c:choose>
