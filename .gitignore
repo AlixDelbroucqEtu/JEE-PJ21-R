@@ -1,3 +1,5 @@
+# DB
+./promos/data/db.mv.db
 ./promos/data
 .metadata
 bin/
