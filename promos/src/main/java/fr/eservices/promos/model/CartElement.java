@@ -27,7 +27,7 @@ public class CartElement {
 
     public CartElement() {}
 
-    public double getPriceAfterPromo (String code) {
+    public double getPriceAfterPromo (String... codes) {
         Promo promo = article.getPromo();
         double total = article.getPrice() * quantite;
 
@@ -37,9 +37,9 @@ public class CartElement {
         }
 
         // Any promo code ?
-        if (code != null) {
+        if (codes.length >= 1) {
             PromoService promoService = new PromoService();
-            promo = promoService.findByCode(code);
+            promo = promoService.findByCode(codes[0]);
         }
 
         // Marketing
