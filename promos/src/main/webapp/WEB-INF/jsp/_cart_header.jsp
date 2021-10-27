@@ -18,7 +18,7 @@
 			<tr style="border-top: 1px black solid;">
 				<td rowspan="2"><img width="50" height="50" src="<c:out value="${element.article.img}"/>"/></td>
 				<td><c:out value="${element.article.libelle}"/></td>
-				<td align="right"><span class="glyphicon glyphicon-remove removeFromCart" style="color:red" data-ref="<c:out value="${element.article.id}"/>"></span></td>
+				<td align="right"><span class="glyphicon glyphicon-remove removeFromCart" data-ref="<c:out value="${element.article.id}"/>"></span></td>
 			</tr>
 			<tr>
 				<td>Quantité : <input type="number" min="1" value="<c:out value="${element.quantite}"/>" id= "qty<c:out value="${element.article.id}"/>" onchange="cartQuantityChanged('qty<c:out value="${element.article.id}"/>',<c:out value="${element.article.id}"/>);" style="width: 50px; text-align: center;" /></td>

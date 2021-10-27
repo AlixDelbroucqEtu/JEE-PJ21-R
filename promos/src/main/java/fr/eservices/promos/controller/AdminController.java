@@ -121,7 +121,7 @@ public class AdminController {
     public List<Article> getArticleMatching(@RequestBody Map<String, String> data) {
         if(data.get("input").length() > 0) {
             if(Integer.parseInt(data.get("idcat")) == 0){
-                return articleService.find(data.get("input").substring(0, data.get("input").length()-1));
+                return articleService.find(data.get("input"));
             }else{
                 return articleService.findWhereCategory(data.get("input").substring(0, data.get("input").length()-1), Integer.parseInt(data.get("idcat")));
             }

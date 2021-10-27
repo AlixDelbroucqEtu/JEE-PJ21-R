@@ -141,7 +141,15 @@
                 success: function (data) {
                     for(let i=0; i<data.length; i++){
                         const color = selectedArticles.has(data[i].id) ? '#DFF0D8' : '#F8F8F8';
-                        $("#selectedArticles").append("<div style='background-color: "+ color +"' onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'><div class='articleInputLib'>"+data[i].libelle+"</div><div class='articleInputMarque'>"+data[i].marque+"</div><div class='articleInputPrix'>"+data[i].price+"€</div></div>");
+                        $("#selectedArticles").append("" +
+                            "<div style='background-color: "+ color +"' onclick='selectArticle("+data[i].id+")' id='articleInput"+data[i].id+"' class='articleInput'>" +
+                                "<div class='articleInputImg'><img src='"+data[i].img+"' alt='Image produit' width='50' height='50'></div>" +
+                                "<div class='articleInputDetails'>" +
+                                    "<div class='articleInputLib'>"+data[i].libelle+"</div>" +
+                                    "<div class='articleInputMarque'>"+data[i].marque+"</div>" +
+                                    "<div class='articleInputPrix'>"+data[i].price+"€</div>" +
+                                "</div>" +
+                            "</div>");
                     }
                 }
             });
@@ -184,7 +192,7 @@
                 method: 'POST',
                 async: false,
                 data: id.toString(),
-                success: function (data) {
+                success: function () {
                     $("#promo"+id).remove();
                 }
             });

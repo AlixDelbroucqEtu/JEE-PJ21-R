@@ -55,3 +55,25 @@ ul.articles li {
 .articleInputPrix {
 	font-size: .7em;
 }
+
+.articleInputDetails {
+	display:inline-block;vertical-align:middle;
+}
+
+.articleInputImg {
+	display:inline-block;
+	margin-right:1em;
+	vertical-align:middle;
+}
+
+#cartInHeader {
+	padding: .3em;
+}
+
+.removeFromCart {
+	color:red;
+}
+
+.removeFromCart:hover {
+	cursor: pointer;
+}
