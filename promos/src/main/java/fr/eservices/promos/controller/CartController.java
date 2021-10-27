@@ -213,7 +213,7 @@ public class CartController {
 	public SimpleResponse addPromoCode(@PathVariable(name="id") int id, @RequestBody String code) throws DataException {
 
 		SimpleResponse res = new SimpleResponse();
-
+		code = code.substring(5);
 		Cart cart = cartService.findByCustomerId(id);
 		if (cart==null) {
 			res.status = SimpleResponse.Status.ERROR;
@@ -224,6 +224,7 @@ public class CartController {
 			// Add promo to cart articles
 			Promo promo = promoService.findByCode(code);
 
+
 			for (CartElement ce: cart.getElements()) {
 				ce.getArticle().setPromo(promo);
 			}
@@ -232,18 +233,15 @@ public class CartController {
 
 			// Set promo as used
 			Customer customer = customerService.findById(id);
-			UsedPromo usedPromo = new UsedPromo(customer, promo);
+			UsedPromo usedPromo = new UsedPromo();
+			usedPromo.setCustomer(customer);
+			usedPromo.setPromo(promo);
 			used_PromoService.save(usedPromo);
 
 			res.status = SimpleResponse.Status.OK;
 			return res;
 		}
 
-	}
-
-	@RequestMapping("/{id}/validate")
-	public String validateCart(@PathVariable(name="id") int id, Model model) {
-		return "redirect:/articles";
 	}
 
 //	@RequestMapping("/{id}/validate.html")

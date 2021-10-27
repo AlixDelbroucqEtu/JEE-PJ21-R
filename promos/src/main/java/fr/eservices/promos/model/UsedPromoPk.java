@@ -2,7 +2,7 @@ package fr.eservices.promos.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-@Embeddable
+
 public class UsedPromoPk implements Serializable {
     private long customer;
     private long promo;
