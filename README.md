@@ -12,6 +12,12 @@ L'objectif de ce projet et de développer la partie promotion du commerce en lig
 
 Ce projet étant un projet Spring Boot, sa configuration est très simple. Vous avez juste à importer ce projet en tant que projet Maven dans votre IDE, puis à lancer la classe "PromosApplication". Le serveur est alors lancé et vous pouvez accéder à vos JSP via un navigateur.
 
+Une fois le serveur lancé, rendez-vous sur `http://localhost:8080/h2-console`, connectez-vous sur `jdbc:h2:file:./data/db` avec le username `sa` et sans mot de passe. Copiez simplement le contenu du script `base-db-structure.sql` et exécutez le dans la console pour initialiser la base de données.
+
+L'application est désormais prête, vous pouvez vous rendre sur `http://localhost:8080/articles`.
+
+**Attention** tout redémarrage du serveur réinitialisera la base de données !
+
 ## Description
 
 ## Objectifs
