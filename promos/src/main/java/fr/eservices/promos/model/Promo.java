@@ -35,6 +35,7 @@ public class Promo {
 
     private String code;
 
+    //THIS FIELD IS USELESS AND SHOULD BE REMOVE. IF PROMOTYPE.ID > 2 THE PROMO IS APPLY ON CART, ELSE NOT
     @Column(name = "on_cart")
     private Boolean onCart;
 

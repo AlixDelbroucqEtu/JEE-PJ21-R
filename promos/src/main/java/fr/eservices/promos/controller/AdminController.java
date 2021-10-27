@@ -89,7 +89,7 @@ public class AdminController {
                             break;
                         default:
                             selectedArticles.clear();
-                            promo.setOnCart(false);
+                            promo.setOnCart(true);
                             promo.setY(0);
                     }
                 break;
