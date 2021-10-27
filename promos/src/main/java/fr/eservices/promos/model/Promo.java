@@ -40,7 +40,7 @@ public class Promo {
 
     public Boolean isDateValid() {
         Date today = new Date();
-        return today.after(start) && today.before(end);
+        return today.compareTo(start) >= 0 && today.compareTo(end) <= 0;
     }
 
     public int getId() {
