@@ -122,7 +122,7 @@ public class AdminController {
             if(Integer.parseInt(data.get("idcat")) == 0){
                 return articleService.find(data.get("input"));
             }else{
-                return articleService.findWhereCategory(data.get("input").substring(0, data.get("input").length()-1), Integer.parseInt(data.get("idcat")));
+                return articleService.findWhereCategory(data.get("input"), Integer.parseInt(data.get("idcat")));
             }
         }
         return null;
