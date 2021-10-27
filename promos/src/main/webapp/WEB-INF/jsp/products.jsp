@@ -39,11 +39,7 @@
 										type="number" 
 										minFractionDigits="2" 
 										maxFractionDigits="2" 
-										value="${article.promo.promoType.getId() % 2 == 0 ?
-												article.price - article.promo.getX()
-												:
-												article.price - (article.promo.getX() / 100) * article.price
-											}" 
+										value="${article.promo.promoType.getId() % 2 == 0 ? (article.price - article.promo.getX() > 0 ? article.price - article.promo.getX() : 0) : article.price - (article.promo.getX() / 100) * article.price }"
 										/>
 										<span>
 											<c:out value="${afterPromoPrice}"/>

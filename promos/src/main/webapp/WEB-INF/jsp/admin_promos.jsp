@@ -37,7 +37,7 @@
         <form:form action="promo" method="post" modelAttribute="Promo">
             <div class="form-group">
                 <label>Type de promo</label>
-                <form:select path="promoType" class="form-control">
+                <form:select path="promoType" class="form-control" autofocus="autofocus">
                 <%
                     String lastType = "";
                 %>
@@ -64,11 +64,11 @@
             </div>
             <div class="form-group">
                 <label for='start'>Date de début</label>
-                <form:input type="date" class="form-control" path="start"></form:input>
+                <form:input type="date" class="form-control" path="start" required="required"></form:input>
             </div>
             <div class="form-group">
                 <label for='end'>Date de fin</label>
-                <form:input type="date" class="form-control" path="end"></form:input>
+                <form:input type="date" class="form-control" path="end" required="required"></form:input>
             </div>
             <div id="adaptativeFields">
                 <div class="form-group">

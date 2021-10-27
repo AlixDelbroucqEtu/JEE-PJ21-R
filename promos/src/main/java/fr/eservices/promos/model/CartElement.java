@@ -71,8 +71,7 @@ public class CartElement {
             case 2: // Valeur absolue produit
                 total = total - (quantite * promo.getX());
         }
-
-        return total;
+        return total > 0 ? total : 0;
     }
 
     public Article getArticle() {

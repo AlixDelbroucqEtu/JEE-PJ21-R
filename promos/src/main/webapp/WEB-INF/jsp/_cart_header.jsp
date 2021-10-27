@@ -38,11 +38,7 @@
 							type="number" 
 							minFractionDigits="2" 
 							maxFractionDigits="2" 
-							value="${element.article.promo.promoType.getId() % 2 == 0 ?
-									(element.article.price - element.article.promo.getX()) * element.quantite
-									:
-									(element.article.price - (element.article.promo.getX() / 100) * element.article.price) * element.quantite
-								}" 
+							value="${element.article.promo.promoType.getId() % 2 == 0 ? ((element.article.price - element.article.promo.getX()) * element.quantite > 0 ? (element.article.price - element.article.promo.getX()) * element.quantite : 0) : (element.article.price - (element.article.promo.getX() / 100) * element.article.price) * element.quantite}"
 							/>
 							<b>
 								<c:out value="${afterPromoPrice}"/> €

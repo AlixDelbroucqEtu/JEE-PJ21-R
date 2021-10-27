@@ -58,7 +58,6 @@ public class AdminController {
 
     @PostMapping(path = "/promo")
     public String addPromo(@ModelAttribute Promo promo, Model model) {
-
         if (promo.getStart() != null && promo.getEnd() != null && promo.getEnd().compareTo(promo.getStart()) >= 0) {
             switch(promo.getPromoType().getType()){
                 //UNE PROMOTION S'APPLIQUE A UN ARTICLE. IL S'AGIT D'UNE REDUCTION DE LA VALEUR D'UN ARTICLE EN POURCENTAGE OU EN EUROS.
@@ -169,7 +168,7 @@ public class AdminController {
                         "            <div id='selectedArticles'>\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage de réduction</label>\n" +
-                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x' required/>\n" +
                         "            </div>";
             case '2':
                 return "             <div class='form-group'>\n" +
@@ -181,20 +180,19 @@ public class AdminController {
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
-                        "\n" +
                         "            </div><div class='form-group'>\n" +
-                        "                <label for='x'>Valeur</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
+                        "                <label for='x'>Valeur de réduction (en €)</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x' required/>\n" +
                         "            </div>";
             case '3':
                 return "" +
                         "            <div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage de réduction</label>\n" +
-                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x' required/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='customerLimit'>Nombre de clients max</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "                <input class='form-control' type='number' required value='0' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='code'>Code</label>\n" +
@@ -203,12 +201,12 @@ public class AdminController {
             case '4':
                 return "" +
                         "            <div class='form-group'>\n" +
-                        "                <label for='x'>Valeur</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x'/>\n" +
+                        "                <label for='x'>Valeur de réduction (en €)</label>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='x' name='x' required/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='customerLimit'>Nombre de clients max</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "                <input class='form-control' type='number' required value='0' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='code'>Code</label>\n" +
@@ -224,14 +222,13 @@ public class AdminController {
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
-                        "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x' required/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='customerLimit'>Nombre de clients max</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "                <input class='form-control' type='number' required value='0' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='code'>Code</label>\n" +
@@ -247,14 +244,13 @@ public class AdminController {
                         "                <input onKeyUp='searchArticles()' id='inputArticles' class='form-control' type='text' maxlength='30' placeholder='Chercher un article...'/>\n" +
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
-                        "\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Pourcentage</label>\n" +
-                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
+                        "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x' required/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='customerLimit'>Nombre de clients max</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "                <input class='form-control' type='number' required value='0' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='code'>Code</label>\n" +
@@ -272,15 +268,15 @@ public class AdminController {
                         "            <div id='selectedArticles'>\n" +
                         "            </div><div class='form-group'>\n" +
                         "                <label for='x'>Valeur X</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x'/>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' id='x' name='x' required/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='y'>Valeur Y</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='y' name='y'/>\n" +
+                        "                <input class='form-control' type='number' min='0' max='1000000' step='.01' id='y' name='y' required/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='customerLimit'>Nombre de clients max</label>\n" +
-                        "                <input class='form-control' type='number' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
+                        "                <input class='form-control' type='number' required value='0' min='0' max='1000000' id='customerLimit' name='customerLimit'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +
                         "                <label for='code'>Code</label>\n" +
