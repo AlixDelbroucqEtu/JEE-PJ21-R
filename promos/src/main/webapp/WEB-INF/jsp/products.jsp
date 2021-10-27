@@ -32,7 +32,7 @@
 										<%-- Old price --%>
 										<span style="text-decoration: line-through">
 											<c:out value="${formattedPrice}" />
-										</span>cd Do
+										</span>
 										<%-- Price after promo --%>
 										<fmt:formatNumber 
 										var="afterPromoPrice" 
