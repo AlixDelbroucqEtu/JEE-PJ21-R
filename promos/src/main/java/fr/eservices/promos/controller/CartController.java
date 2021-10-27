@@ -208,22 +208,21 @@ public class CartController {
 
 	}
 
-	@ResponseBody
 	@PostMapping(path="/{id}/promo-code")
-	public SimpleResponse addPromoCode(@PathVariable(name="id") int id, @RequestBody String code) throws DataException {
+	public String addPromoCode(@PathVariable(name="id") int id, @RequestBody String code) throws DataException {
 
-		SimpleResponse res = new SimpleResponse();
 		code = code.substring(5);
 		Cart cart = cartService.findByCustomerId(id);
 		if (cart==null) {
-			res.status = SimpleResponse.Status.ERROR;
-			res.message = "Ce panier n'existe pas";
-			return res;
+			return "error";
 		} else {
 
 			// Add promo to cart articles
 			Promo promo = promoService.findByCode(code);
 
+			if (promo == null) {
+				return "error";
+			}
 
 			for (CartElement ce: cart.getElements()) {
 				ce.getArticle().setPromo(promo);
@@ -238,8 +237,7 @@ public class CartController {
 			usedPromo.setPromo(promo);
 			used_PromoService.save(usedPromo);
 
-			res.status = SimpleResponse.Status.OK;
-			return res;
+			return "redirect:/articles";
 		}
 
 	}
