@@ -151,6 +151,7 @@ public class AdminController {
     @ResponseBody
     @PostMapping(path="/adaptForm")
     public String adaptForm(@RequestBody String promoType) {
+        selectedArticles.clear();
         String optionsCategories = "";
         for (Category category: categoryService.findAll()){
             optionsCategories += "<option value='"+category.getId()+"'>"+category.getName()+"</option>";
@@ -167,7 +168,7 @@ public class AdminController {
                         "            </div>\n" +
                         "            <div id='selectedArticles'>\n" +
                         "            </div><div class='form-group'>\n" +
-                        "                <label for='x'>Pourcentage</label>\n" +
+                        "                <label for='x'>Pourcentage de réduction</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>";
             case '2':
@@ -188,7 +189,7 @@ public class AdminController {
             case '3':
                 return "" +
                         "            <div class='form-group'>\n" +
-                        "                <label for='x'>Pourcentage</label>\n" +
+                        "                <label for='x'>Pourcentage de réduction</label>\n" +
                         "                <input type='number' min='0' max='100' step='.01' class='form-control' id='x' name='x'/>\n" +
                         "            </div>\n" +
                         "            <div class='form-group'>\n" +

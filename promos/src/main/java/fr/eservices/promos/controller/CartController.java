@@ -127,13 +127,6 @@ public class CartController {
 
 			cartService.save(cart);
 
-			System.out.println(
-					"********************\n"
-							+ "***** " + String.format("Add Article %d x [%d] to cart", art.getQty(), article.getId()) + "\n"
-							+ "********************"
-			);
-
-
 			res.status = SimpleResponse.Status.OK;
 
 			return res;

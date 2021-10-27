@@ -157,6 +157,7 @@
 
         $("#promoType").change(function () {
             $("#adaptativeFields").empty();
+            selectedArticles.clear();
             $.ajax({
                 url: 'adaptForm',
                 method: 'POST',

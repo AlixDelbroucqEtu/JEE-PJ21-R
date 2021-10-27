@@ -43,18 +43,18 @@ public class CartElement {
             case 5: // X + 1 gratuit
                 if (quantite >= promo.getX()) {
                     total = total - article.getPrice();
-                    break;
                 }
+                break;
             case 6: // 2eme a X %
                 if (quantite >= 2) {
-                    total = total - (article.getPrice() * (promo.getX() / 100));
-                    break;
+                    total = total - (article.getPrice() * ((100-promo.getX()) / 100));
                 }
+                break;
             case 7:
                 if (quantite >= promo.getX()) {
                     total = total - (promo.getX() * article.getPrice()) + promo.getY();
-                    break;
                 }
+                break;
             case 4: // Valeur fixe panier
                 total = total - promo.getX();
                 break;
